@@ -1,0 +1,1 @@
+By default, an HTML project page is built from the ../README.md file. You may create your own Markdown source file, if you like. Put it here and change the "DOC_PAGE_SOURCE" variable at the top of the ../Makefile to point to it.

@@ -1,0 +1,7 @@
+{
+  "name": "ft-connect-minimal-site",
+  "short_name": "ft-connect-minimal-site",
+  "description": "A minimal working example of a website that embeds a FileThis Connect element.",
+  "start_url": "/",
+  "display": "standalone"
+}

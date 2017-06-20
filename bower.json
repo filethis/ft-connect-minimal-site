@@ -1,0 +1,35 @@
+{
+  "name": "ft-connect-minimal-site",
+  "description": "A minimal working example of a website that embeds a FileThis Connect element.",
+  "main": "index.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.1",
+    "web-animations-js": "^2.2.2",
+    "iron-label": "PolymerElements/iron-label#^2.0.0",
+    "iron-list": "PolymerElements/iron-list#^2.0.0",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
+    "ft-connect-expand-out": "filethis/ft-connect-expand-out#^0.0.6"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "ignore": [],
+  "resolutions": {
+    "iron-label": "^2.0.0",
+    "iron-list": "^2.0.0",
+    "polymer": "^2.0.1",
+    "webcomponentsjs": "^v1.0.0",
+    "iron-a11y-keys-behavior": "^2.0.0",
+    "paper-styles": "^2.0.0",
+    "iron-flex-layout": "^2.0.0",
+    "paper-item": "^2.0.0",
+    "ft-connection-details": "^0.0.8",
+    "ft-connection-list": "^0.0.8",
+    "ft-connection-list-item": "^0.0.9",
+    "marked-element": "^2.1.1",
+    "ft-confirmation-dialog": "^0.0.4"
+  }
+}

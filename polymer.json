@@ -1,5 +1,8 @@
 {
     "entrypoint": "index.html",
+    "lint": {
+      "rules": ["polymer-2-hybrid"]
+    },
     "shell": "src/ft-connect-minimal-site.html",
     "fragments": [
     ],

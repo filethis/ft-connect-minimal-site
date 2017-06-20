@@ -27,12 +27,15 @@ limitations under the License.
     <!-- See https://goo.gl/OOhYW5 -->
     <link rel="manifest" href="manifest.json">
 
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
     <link rel="import" href="bower_components/polymer/polymer.html">
     <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="bower_components/ft-connect-expand-out/ft-connect-expand-out.html">
 
-    <link rel="import" href="src/ft-connect-minimal-site.html">
+
+
 </head>
 
 <style>
@@ -43,7 +46,21 @@ limitations under the License.
 
 <body>
 
-<ft-connect-minimal-site></ft-connect-minimal-site>
+<div>
+    Welcome to the minimal working example of the FileThis Connect web component
+</div>
+
+<!--<ft-connect-expand-out-->
+        <!--name="ft-connect-expand-out"-->
+        <!--enabled="[[enabled]]"-->
+        <!--server="[[server]]"-->
+        <!--api-path="[[apiPath]]"-->
+        <!--user-account-id="[[userAccountId]]"-->
+        <!--token="[[token]]"-->
+        <!--interaction-version="[[interactionVersion]]"-->
+        <!--route="{{route}}"-->
+        <!--on-ft-connect-error="_handleFileThisConnectErrorEvent">-->
+<!--</ft-connect-expand-out>-->
 
 </body>
 </html>

@@ -3,20 +3,20 @@
   "description": "A minimal working example of a website that embeds a FileThis Connect element.",
   "main": "index.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.9.1",
+    "polymer": "Polymer/polymer#^2.0.1",
     "web-animations-js": "^2.2.2",
     "iron-label": "PolymerElements/iron-label#^2.0.0",
     "iron-list": "PolymerElements/iron-list#^2.0.0",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0"
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
+    "ft-connect-expand-out": "filethis/ft-connect-expand-out#^0.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
     "web-component-tester": "^4.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.1"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   },
   "ignore": [],
   "resolutions": {
-    "webcomponentsjs": "^1.0.1"
   }
 }

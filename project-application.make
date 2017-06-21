@@ -124,8 +124,8 @@ release-github-pages: build-app
 #		--remove ./docs/README.md; \
 #	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
 
-.PHONY: release-bower
-release-bower:  # Internal target: Register element in public Bower registry. Usually invoked as part of a release via 'release' target.
+.PHONY: bower-register
+bower-register:  # Internal target: Register element in public Bower registry. Usually invoked as part of a release via 'release' target.
 	@echo TODO: Should Polymer applications be registered in Bower?;
 
 

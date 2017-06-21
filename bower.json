@@ -18,18 +18,7 @@
   },
   "ignore": [],
   "resolutions": {
-    "iron-label": "^2.0.0",
-    "iron-list": "^2.0.0",
     "polymer": "^2.0.1",
-    "webcomponentsjs": "^v1.0.0",
-    "iron-a11y-keys-behavior": "^2.0.0",
-    "paper-styles": "^2.0.0",
-    "iron-flex-layout": "^2.0.0",
-    "paper-item": "^2.0.0",
-    "marked-element": "^2.1.1",
-    "ft-connection-details": "^0.0.10",
-    "ft-connection-list": "^0.0.9",
-    "ft-confirmation-dialog": "^0.0.5",
-    "ft-labeled-icon-button": "^0.0.3"
+    "webcomponentsjs": "^v1.0.0"
   }
 }

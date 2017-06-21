@@ -3,7 +3,7 @@
     "lint": {
       "rules": ["polymer-2-hybrid"]
     },
-    "shell": "index.html",
+    "shell": "src/ft-connect-minimal-site.html",
     "fragments": [
     ],
     "sources": [

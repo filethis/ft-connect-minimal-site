@@ -99,8 +99,8 @@ print-url-docs-github-pages:  ## Print URL of application documentation publishe
 
 # Release -----------------------------------------------------------------------------------
 
-.PHONY: release-github-pages
-release-github-pages: build-app
+.PHONY: publish-github-pages
+publish-github-pages: build-app
 	@bin_dir="$$(dirname `which gh-pages`)"; \
 	parent_dir="$$(dirname $$bin_dir)"; \
 	lib_dir=$$parent_dir/lib; \
@@ -112,8 +112,8 @@ release-github-pages: build-app
 		--dist ./build/default; \
 	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
 
-#.PHONY: release-github-pages
-#release-github-pages: build-app # Internal target: Publish application docs on GitHub Pages. Usually invoked as part of a release via 'release' target.
+#.PHONY: publish-github-pages
+#publish-github-pages: build-app # Internal target: Publish application docs on GitHub Pages. Usually invoked as part of a release via 'release' target.
 #	@bin_dir="$$(dirname `which gh-pages`)"; \
 #	parent_dir="$$(dirname $$bin_dir)"; \
 #	lib_dir=$$parent_dir/lib; \

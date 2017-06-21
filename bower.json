@@ -8,7 +8,7 @@
     "iron-label": "PolymerElements/iron-label#^2.0.0",
     "iron-list": "PolymerElements/iron-list#^2.0.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
-    "ft-connect-expand-out": "filethis/ft-connect-expand-out#^0.0.8"
+    "ft-connect-expand-out": "filethis/ft-connect-expand-out#^0.0.10"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
@@ -19,6 +19,9 @@
   "ignore": [],
   "resolutions": {
     "polymer": "^2.0.1",
-    "webcomponentsjs": "^v1.0.0"
+    "webcomponentsjs": "^v1.0.0",
+    "iron-a11y-keys-behavior": "^2.0.0",
+    "paper-styles": "^2.0.0",
+    "iron-flex-layout": "^2.0.0"
   }
 }

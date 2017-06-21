@@ -6,7 +6,13 @@
     "shell": "src/ft-connect-minimal-site.html",
     "fragments": [
     ],
-    "sourceGlobs": [
+    "builds": [{
+      "bundle": false,
+      "js": {"minify": false},
+      "css": {"minify": false},
+      "html": {"minify": false}
+    }],
+    "sources": [
      "src/**/*",
      "data/**/*",
      "bower.json"

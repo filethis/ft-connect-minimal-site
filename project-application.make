@@ -36,20 +36,9 @@ build-app:  ## Build application
 clean-app:  ## Clean application
 	@rm -rf ./build/;
 
-build-app-docs: ./docs/index.html  ## Build application project documentation page
-
 .PHONY: clean-app-docs
 clean-app-docs:  ## Clean application documentation page
 	@rm -f ./docs/index.html;
-
-./docs/index.html: ${DOC_PAGE_SOURCE}
-	@pandoc ${DOC_PAGE_SOURCE} \
-		-f markdown \
-		-t html \
-		-s \
-		--css=./docs.css \
-		-o ./docs/index.html; \
-	echo ./docs/index.html;
 
 
 # Running -----------------------------------------------------------------------------------
@@ -111,7 +100,7 @@ print-url-docs-github-pages:  ## Print URL of application documentation publishe
 # Release -----------------------------------------------------------------------------------
 
 .PHONY: release-github-pages
-release-github-pages: build-app-docs # Internal target: Publish application docs on GitHub Pages. Usually invoked as part of a release via 'release' target.
+release-github-pages: build-app
 	@bin_dir="$$(dirname `which gh-pages`)"; \
 	parent_dir="$$(dirname $$bin_dir)"; \
 	lib_dir=$$parent_dir/lib; \
@@ -119,21 +108,25 @@ release-github-pages: build-app-docs # Internal target: Publish application docs
 	gh-pages \
 		--repo https://github.com/filethis/${NAME}.git \
 		--branch gh-pages \
-		--dist ./docs/ \
-		--remove ./docs/README.md; \
-	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
+		--dist ./build/default; \
+	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
+
+#.PHONY: release-github-pages
+#release-github-pages: build-app # Internal target: Publish application docs on GitHub Pages. Usually invoked as part of a release via 'release' target.
+#	@bin_dir="$$(dirname `which gh-pages`)"; \
+#	parent_dir="$$(dirname $$bin_dir)"; \
+#	lib_dir=$$parent_dir/lib; \
+#	rm -rf $$lib_dir/node_modules/gh-pages/.cache; \
+#	gh-pages \
+#		--repo https://github.com/filethis/${NAME}.git \
+#		--branch gh-pages \
+#		--dist ./docs/ \
+#		--remove ./docs/README.md; \
+#	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
 
 .PHONY: release-bower
 release-bower:  # Internal target: Register element in public Bower registry. Usually invoked as part of a release via 'release' target.
 	@echo TODO: Should Polymer applications be registered in Bower?;
 
 
-## TODO: Merge the application into the demo deploy above, so that the doc page can just link to it, just like the element doc pages do!!!
-#.PHONY: publish-app-github-pages
-#publish-app-github-pages: build-app-docs
-#	@gh-pages \
-#		--repo https://github.com/filethis/${NAME}.git \
-#		--branch gh-pages \
-#		--dist ./build/bundled; \
-#	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
 

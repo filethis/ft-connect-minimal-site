@@ -26,10 +26,6 @@
     "paper-styles": "^2.0.0",
     "iron-flex-layout": "^2.0.0",
     "paper-item": "^2.0.0",
-    "ft-connection-details": "^0.0.8",
-    "ft-connection-list": "^0.0.8",
-    "ft-connection-list-item": "^0.0.9",
-    "marked-element": "^2.1.1",
-    "ft-confirmation-dialog": "^0.0.4"
+    "marked-element": "^2.1.1"
   }
 }

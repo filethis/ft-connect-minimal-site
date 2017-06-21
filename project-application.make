@@ -108,6 +108,7 @@ release-github-pages: build-app
 	gh-pages \
 		--repo https://github.com/filethis/${NAME}.git \
 		--branch gh-pages \
+		--silent \
 		--dist ./build/default; \
 	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
 

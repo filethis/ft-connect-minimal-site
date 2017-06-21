@@ -1,0 +1,318 @@
+<!--
+Copyright 2017 FileThis, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--><link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../iron-label/iron-label.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../array-filter/array-filter.html">
+<link rel="import" href="../paper-search/paper-search.html">
+<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../neon-animation/neon-animations.html">
+
+<link rel="import" href="../ft-create-connection-dialog/ft-create-connection-dialog.html">
+<link rel="import" href="../ft-source-grid/ft-source-grid.html">
+<link rel="import" href="../ft-scrolling-behavior/ft-scrolling-behavior.html">
+
+
+<!-- TODO: Retrofit this to use iron-list instead of a dom-repeat template. -->
+
+
+<!--
+`ft-source-panel`
+A panel that displays a list of FileThis sources.
+
+@demo demo/index.html 
+-->
+
+<dom-module id="ft-source-panel">
+
+    <template>
+
+        <style include="iron-flex iron-flex-alignment iron-positioning iron-flex-factors"></style>
+
+        <style>
+            :host {
+                display:block;
+            }
+        </style>
+
+        <!-- Search and sort bar -->
+        <div id="searchAndSortBar" class="layout horizontal center" style="height:60px; padding-left:16px; border-bottom:1px solid #DDD; " hidden$="[[!_showHeader]]">
+
+            <!-- Title -->
+            <iron-label hidden$="[[!showTitle]]" style="font-family:Arial; font-size:14pt; ">
+                [[title]]
+            </iron-label>
+
+            <div class="flex"></div>
+
+            <!-- Filter -->
+            <paper-menu-button hidden$="[[!showFilters]]">
+
+                <!-- Button -->
+                <paper-button slot="dropdown-trigger" style="width:100px; height:32px; font-size:12px; background-color:white; text-transform: none; border:1px solid #DDD; ">
+                    <iron-icon icon="arrow-drop-down"></iron-icon>
+                    <span>[[filter]]</span>
+                </paper-button>
+
+                <!-- Dropdown -->
+                <paper-listbox slot="dropdown-content" selected="{{_filterIndex}}">
+                    <template is="dom-repeat" items="[[_filters]]" as="filter">
+                        <paper-item>[[filter]]</paper-item>
+                    </template>
+                </paper-listbox>
+
+            </paper-menu-button>
+
+            <!-- Search -->
+            <paper-search-bar placeholder="Search" hide-filter-button="" hidden$="[[!showSearchField]]" style="width:120px; height:30px; border:1px solid #DDD; margin:8px; " query="{{_searchString}}">
+            </paper-search-bar>
+        </div>
+
+        <!-- Source Grid -->
+        <div id="gridScroller" style="overflow:auto;">
+            <ft-source-grid id="sourceGrid" sources="[[sources]]" selected-source="{{selectedSource}}">
+            </ft-source-grid>
+        </div>
+
+        <!-- Connect Dialog -->
+        <ft-create-connection-dialog id="createConnectionDialog" on-cancel="_onCreateConnectionDialogClosed" on-commit="_onCreateConnectionDialogClosed">
+        </ft-create-connection-dialog>
+
+        <!--<array-filter-->
+                <!--id="arrayFilter"-->
+                <!--items="{{sources}}"-->
+                <!--filtered="{{_sourcesFilteredAndSorted}}"-->
+                <!--filter="_filter"-->
+                <!--sort="_sorter">-->
+        <!--</array-filter>-->
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'ft-source-panel',
+
+            behaviors: [
+                Polymer.IronResizableBehavior,
+                FtScrollingBehavior
+            ],
+
+            listeners:
+            {
+                'connect': '_onConnectToSource',
+                'tap': '_onTap'
+            },
+
+            properties: {
+
+                /** The list of all source resources. */
+                sources: {
+                    type: Array,
+                    notify: true,
+                    value: []
+                },
+
+                /** The name of the filter to apply to sources. */
+                filter: {
+                    type: String,
+                    notify: true,
+                    value: ""
+                },
+
+                /** The currently-selected source, if any. */
+                selectedSource:
+                {
+                    type: Object,
+                    notify: true,
+                    value: null
+                },
+
+                /** Show a title string. */
+                showTitle:
+                {
+                    type: Boolean,
+                    value: true,
+                    observer: "_showButtonChanged"
+                },
+
+                /** Title to display when "showTitle" is true. */
+                title:
+                {
+                    type: String,
+                    value: "Sites"
+                },
+
+//                /** Show a filter popup button. */
+                showFilters:
+                {
+                    type: Boolean,
+                    value: false,
+                    observer: "_showButtonChanged"
+                },
+
+                /** Show a button that lets users choose to show the search field. */
+                showSearchField:
+                {
+                    type: Boolean,
+                    value: true,
+                    observer: "_showButtonChanged"
+                },
+
+                _showHeader:
+                {
+                    type: Boolean,
+                    value: true,
+                    observer: "_showHeaderChanged"
+                },
+
+                _searchString: {
+                    type: String,
+                    value: "",
+                    observer: "_searchPatternChanged"
+                },
+
+//                _sourcesFilteredAndSorted: {
+//                    type: Array,
+//                    value: []
+//                },
+
+                _filters: {
+                    type: Array,
+                    value: [
+                        "All",
+                        "Banking",
+                        "Favorites",
+                        "Financial",
+                        "Payroll",
+                        "Tax",
+                        "Utilities"
+                    ]
+                },
+
+                _filterIndex: {
+                    type: Number,
+                    value: 0,
+                    observer: "_filterIndexChanged"
+                }
+
+            },
+
+            ready: function()
+            {
+                this._manageScroller(this.$.gridScroller);
+            },
+
+            _onTap: function(event)
+            {
+                if (event.ftComponentName === undefined)
+                    event.ftComponentName = "ft-source-panel";
+            },
+
+            _filterIndexChanged: function(to, from)
+            {
+                if (this._filterIndex === null)
+                    return;
+                const filter = this._filters[this._filterIndex];
+                this.filter = filter;
+            },
+
+            _calculateScrollerHeight: function(scroller)
+            {
+                const bar = this.$.searchAndSortBar;
+                const barIsHidden = (bar.offsetParent === null);
+                var barHeight = 0;
+                if (!barIsHidden)
+                    barHeight = bar.offsetHeight;
+                return this.clientHeight - barHeight;
+            },
+
+            _filter: function(source)
+            {
+                const searchString = this._searchString.toLowerCase();
+
+                // If we have no search string, let everything through
+                if (searchString === "")
+                    return true;
+
+                // If the search string matches any part of the source name, let it through
+                const sourceName = source.name.toLowerCase();
+                const index = sourceName.indexOf(searchString);
+                const containsSearchString = (index >= 0);
+                if (containsSearchString)
+                    return true;
+
+                // No match
+                return false;
+            },
+
+            _sorter: function(first, second)
+            {
+                // Sort alphabetically by the source name
+                return (first.name > second.name ? 1 : -1);
+            },
+
+            _searchPatternChanged: function(to, from)
+            {
+//                this.$.arrayFilter.update();
+            },
+
+            _onConnectToSource: function(event, detail)
+            {
+                var source = detail;
+                var createConnectionDialog = this.$.createConnectionDialog;
+                createConnectionDialog.source = source;
+
+                createConnectionDialog.open();
+            },
+
+            _showButtonChanged: function(to, from)
+            {
+                this._showHeader = this._canShowHeader();
+            },
+
+            _showHeaderChanged: function(to, from)
+            {
+                this.notifyResize();
+            },
+
+            _canShowHeader: function()
+            {
+                if (this.showTitle)
+                    return true;
+                if (this.showFilters)
+                    return true;
+                if (this.showSearchField)
+                    return true;
+                return false;
+            },
+
+            _onCreateConnectionDialogClosed: function()
+            {
+                // Deselect the selected source item
+//                this.selectedSource = null;  // This should work!!!
+                this.$.sourceGrid.clearSelection();
+            }
+
+        });
+    </script>
+</dom-module>

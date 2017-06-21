@@ -7,8 +7,7 @@
     "web-animations-js": "^2.2.2",
     "iron-label": "PolymerElements/iron-label#^2.0.0",
     "iron-list": "PolymerElements/iron-list#^2.0.0",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
-    "ft-connect-expand-out": "filethis/ft-connect-expand-out#^0.0.10"
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",

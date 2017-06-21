@@ -1,0 +1,93 @@
+<!--
+Copyright 2017 FileThis, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--><link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../iron-label/iron-label.html">
+
+<!--
+`ft-document-grid-item`
+An element that renders a FileThis document thumbnail in a grid list.
+
+@demo demo/index.html
+-->
+
+<dom-module id="ft-document-grid-item">
+
+    <template>
+
+        <style include="iron-flex iron-flex-alignment iron-positioning"></style>
+
+        <style>
+            :host {
+                display:block;
+            }
+        </style>
+
+        <div id="interior" class="layout vertical center" style="padding-left:15px; padding-top:15px; padding-right:15px;">
+
+            <!-- Thumbnail -->
+            <div id="thumb" style="box-shadow: 3px 3px 3px #888888;border:1px solid #DDD;">
+                <img src="[[document.thumbnailUrl]]" width="150" height="200" alt="Thumbnail">
+            </div>
+
+            <div style="height:16px;"></div>
+
+            <!-- Name -->
+            <iron-label id="name" style="width:150px; font-family:Arial; font-size:12px; color:#333333; text-overflow:ellipsis; overflow: hidden; white-space:nowrap;">
+                [[document.name]]
+            </iron-label>
+
+            </div>
+
+        
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'ft-document-grid-item',
+
+            properties: {
+
+                /** The document resource to be displayed. */
+                document: {
+                    type: Object,
+                    notify: true,
+                    value: null
+                },
+
+                /** Whether the document item should appear selected, or not. */
+                selected: {
+                    type: Boolean,
+                    notify: true,
+                    value: false,
+                    observer: "_onSelectedChanged"
+                }
+            },
+
+            _onSelectedChanged: function(to, from)
+            {
+                var interior = this.$.interior;
+                if (this.selected)
+                    interior.style.backgroundColor = "#F6F6F6";
+                else
+                    interior.style.backgroundColor = "#FFFFFF";
+            }
+
+        });
+    </script>
+</dom-module>

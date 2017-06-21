@@ -1,0 +1,221 @@
+<!--
+Copyright 2017 FileThis, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--><link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../ft-error-behavior/ft-error-behavior.html">
+
+<script>
+
+    /* Specialize Error class to represent non-200 responses so that callers can handle them specially */
+
+    function FtHttpUnsuccessfulError(message, status, response)
+    {
+        this.message = message;
+        this.status = status;
+        this.response = response;
+    }
+
+    FtHttpUnsuccessfulError.prototype = new Error();
+
+
+    /**
+     * `ft-http-behavior`
+     * A behavior that provides HTTP requests using Promises.
+     * @demo demo/index.html
+     * @polymerBehavior FtHttpBehavior
+     */
+
+    FtHttpBehavior = {
+
+        httpPost: function(url, body, options)
+        {
+            return this._http('POST', url, body, options)
+        },
+
+        httpGet: function(url, options)
+        {
+            const nullBody = null;
+            return this._http('GET', url, nullBody, options)
+        },
+
+        httpPut: function(url, body, options)
+        {
+            return this._http('PUT', url, body, options)
+        },
+
+        httpDelete: function(url, options)
+        {
+            const nullBody = null;
+            return this._http('DELETE', url, nullBody, options)
+        },
+
+        _http: function(method, url, body, options)
+        {
+            return new Promise(function(resolve, reject)
+            {
+                const description = method + " " + url;
+
+                var request = new XMLHttpRequest();
+
+                request.open(method, url, true);
+
+                var contentType = null;
+                var accept = null;
+                var responseType = null;
+
+                // Handle options
+                if (options)
+                {
+                    // Headers
+                    if (options.headers)
+                    {
+                        const headers = options.headers;
+                        Object.keys(headers).forEach(function(name)
+                        {
+                            const value = headers[name];
+
+                            switch (name.toLowerCase())
+                            {
+                                case "content-type":
+                                    contentType = value;
+                                    break;
+
+                                case "accept":
+                                    accept = value;
+                                    break;
+
+                                default:
+                                    request.setRequestHeader(name, value);  // Add any other header immediately
+                                    break;
+                            }
+                        });
+                    }
+
+                    // withCredentials
+                    const optionWithCredentials = options.withCredentials;
+                    if (!!optionWithCredentials)
+                        request.withCredentials = optionWithCredentials;
+
+                    // responseType
+                    const optionResponseType = options.responseType;
+                    if (!!optionResponseType)
+                        responseType = optionResponseType;
+                }
+
+                // On getting a response from the server
+                request.onload = function()
+                {
+                    const status = request.status;
+                    const statusText = request.statusText;
+
+                    // Get the response, if there is one
+                    var response = null;
+                    switch (request.responseType.toLowerCase())
+                    {
+                        case "blob":
+                        case "json":
+                            if (!!request.response)
+                                response = request.response;
+                            break;
+
+                        case "text":
+                        default:
+                            if (!!request.responseText)
+                                response = request.responseText;
+                            break;
+                    }
+
+                    // If the server told us we were successful
+                    if (status >= 200 && status < 300)
+                    {
+                        // Resolve our promise with the response
+                        resolve(response);
+                    }
+                    else // the server told us we failed
+                    {
+                        // Build a message string that standard error handlers can display
+                        var message = description + " failed" +
+                            "\n\nRequest: " + description +
+                            "\n\nstatusText: \"" + statusText + "\"";
+
+                        // Create our specialized error (derived from the "Error" class) which includes the server response
+                        var error = new FtHttpUnsuccessfulError(message, status, response);
+
+                        // Reject our promise with our specialized error instance
+                        reject(error);
+                    }
+                }.bind(this);
+
+                // On communications/network failure
+                request.onerror = function(message, url, lineNumber, columnNumber, errorObject)
+                {
+                    // Create an Error instance describing the problem
+                    message = description + " failed\n" + message;
+                    var error = this.createErrorFromValues(message, url, lineNumber, columnNumber, errorObject);
+
+                    // Reject our promise with the Error instance
+                    reject(error);
+                }.bind(this);
+
+                // If a request body is given, stringify it, if necessary, and take care of the Content-Type header
+                if (body)
+                {
+                    if (body instanceof FormData)
+                    {
+                        // We let XMLHttpRequest.send() create and add the Content-Type header. It will add a
+                        // "multipart/form-data" header with "boundary" string appended to it.
+                        contentType = null;
+                    }
+                    else if (typeof body === "object")
+                    {
+                        // Assume JSON
+                        contentType = "application/json; charset=utf-8";
+                        body = JSON.stringify(body);
+                    }
+                    else
+                    {
+                        contentType = "text/plain; charset=utf-8";
+                    }
+
+                    // Add a Content-Type header, but only if one has been given, or inferred. (See FormData, above.)
+                    if (!!contentType)
+                        request.setRequestHeader("Content-Type", contentType);
+                }
+
+                // Let the Accept type default to JSON
+                if (!accept)
+                    accept = "application/json; charset=utf-8";
+
+                // Let the responseType default to JSON
+                if (!responseType)
+                    responseType = "json";
+
+                // Add an Accept header
+                request.setRequestHeader("Accept", accept);
+
+                // Set the responseType
+                request.responseType = responseType;
+
+                // Make the request
+                if (body)
+                    request.send(body);
+                else
+                    request.send();
+
+            }.bind(this));
+        }
+    }
+
+</script>

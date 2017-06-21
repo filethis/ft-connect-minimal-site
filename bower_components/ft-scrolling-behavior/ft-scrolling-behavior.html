@@ -1,0 +1,168 @@
+<!--
+Copyright 2017 FileThis, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--><link rel="import" href="../polymer/polymer.html">
+
+<script>
+
+    /**
+     * `ft-scrolling-behavior`
+     * A behavior that helps with scrolling of elements.
+     * @demo demo/index.html
+     * @polymerBehavior FtHttpBehavior
+     */
+
+    FtScrollingBehavior = {
+
+        listeners: {
+            'iron-resize': '_onIronResize'
+        },
+
+        properties: {
+
+            _managedScrollers: {
+                type: Array,
+                value: function() { return []; }
+            }
+
+        },
+
+        _manageScroller: function(scroller)
+        {
+            if (this._scrollerIsManaged(scroller))
+                return;
+
+            // Add scroller to our list
+            this._managedScrollers.push(scroller);
+
+            // Start listening for mouse wheel events on the scroller
+            scroller.addEventListener("wheel", this._onWheel);
+        },
+
+        _unmanageScroller: function(scroller)
+        {
+            if (!this._scrollerIsManaged(scroller))
+                return;
+
+            // Stop listening for mouse wheel events on the scroller
+            scroller.removeEventListener("wheel", this._onWheel);
+
+            // Remove scroller from our list
+            const index = this._managedScrollers.indexOf(scroller);
+            this._managedScrollers.splice(index, 1);
+        },
+
+        _scrollerIsManaged: function(scroller)
+        {
+            const index = this._managedScrollers.indexOf(scroller);
+            return (index >= 0);
+        },
+
+        _onIronResize: function()
+        {
+            // For each managed scroller
+            this._managedScrollers.forEach(function(scroller)
+            {
+                // Calculate and set the scroller's width
+                if (this.clientWidth !== 0)  // Is this necessary? Why?
+                {
+                    const newWidth = this._calculateScrollerWidth(scroller);
+                    scroller.style.width = newWidth + "px";
+                }
+
+                // Calculate and set the scroller's height
+                if (this.clientHeight !== 0)  // Is this necessary? Why?
+                {
+                    const newHeight = this._calculateScrollerHeight(scroller);
+                    scroller.style.height = newHeight + "px";
+                }
+            }.bind(this));
+        },
+
+        _calculateScrollerWidth: function(scroller)
+        {
+            // Default to full width. This makes sense when the element has no siblings,
+            // or it and its siblings are laid out vertically. Override in the class that mixes in this behavior.
+            return this.clientWidth;
+        },
+
+        _calculateScrollerHeight: function(scroller)
+        {
+            // Default to full height. This makes sense when the element has no siblings,
+            // or it and its siblings are laid out horizontally. Override in the class that mixes in this behavior.
+            return this.clientHeight;
+        },
+
+        _onWheel: function(event)
+        {
+            // If vertical scroll
+            const deltaY = event.deltaY;
+            const vertical = (deltaY !== 0);
+            if (vertical)
+            {
+                const up = (deltaY < 0);
+                if (up)
+                {
+                    const viewportTop = this.scrollTop;
+                    const alreadyAtTop = (viewportTop === 0);
+                    if (alreadyAtTop)
+                        event.preventDefault();
+                    return;
+                }
+
+                const down = (deltaY > 0);
+                if (down)
+                {
+                    const viewportBottom = this.scrollTop + this.offsetHeight;
+                    const alreadyAtBottom = (viewportBottom >= this.scrollHeight);
+                    if (alreadyAtBottom)
+                        event.preventDefault();
+                    return;
+                }
+                return;
+            }
+
+            // If horizontal scroll
+            const deltaX = event.deltaX;
+            const horizontal = (deltaX !== 0);
+            if (horizontal)
+            {
+                const left = (deltaX < 0);
+                if (left)
+                {
+                    const viewportLeft = this.scrollLeft;
+                    const alreadyAtLeft = (viewportLeft === 0);
+                    if (alreadyAtLeft)
+                        event.preventDefault();
+                    return;
+                }
+
+                const right = (deltaX > 0);
+                if (right)
+                {
+                    const viewportRight = this.scrollLeft + this.offsetWidth;
+                    const alreadyAtRight = (viewportRight >= this.scrollWidth);
+                    if (alreadyAtRight)
+                        event.preventDefault();
+                    return;
+                }
+                return;
+            }
+        }
+
+    }
+
+</script>
+
+

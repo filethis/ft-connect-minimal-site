@@ -110,17 +110,17 @@ A panel that displays a list of FileThis documents
             </div>
 
             <!-- Views -->
-            <iron-pages id="views" style="width:100%; height:100%; background-color:white; " attr-for-selected="id" selected="{{selectedView}}">
+            <iron-pages id="views" style="width:100%; height:100%; background-color:white; " attr-for-selected="id" selected="[[selectedView]]">
 
                 <!-- Grid -->
                 <div id="grid" style="overflow:auto;">
-                    <ft-document-grid documents="[[documents]]" selected-document="{{selectedDocument}}">
+                    <ft-document-grid id="documentGrid" documents="[[documents]]" selected-document="{{selectedDocument}}">
                     </ft-document-grid>
                 </div>
 
                 <!-- List -->
                 <div id="list" style="overflow:auto">
-                    <ft-document-list style="border-bottom:1px solid #DDD" documents="[[documents]]" selected-document="{{selectedDocument}}">
+                    <ft-document-list id="documentList" style="border-bottom:1px solid #DDD" documents="[[documents]]" selected-document="{{selectedDocument}}">
                     </ft-document-list>
                 </div>
 
@@ -347,6 +347,8 @@ A panel that displays a list of FileThis documents
             {
                 // Man, this is fugly...
                 this._fixGrid();
+//                this.$.documentGrid.fire('resize');
+//                this.$.documentList.fire('resize');
 
                 var documentCount = 0;
                 if (!!this.documents)

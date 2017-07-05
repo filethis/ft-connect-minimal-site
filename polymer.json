@@ -1,7 +1,8 @@
 {
     "entrypoint": "index.html",
     "lint": {
-      "rules": ["polymer-2-hybrid"]
+        "rules": ["polymer-2-hybrid"],
+        "ignoreWarnings": ["multiple-doc-comments"]
     },
     "shell": "index.html",
     "fragments": [

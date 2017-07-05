@@ -23,7 +23,11 @@ include project-common.make
 
 .PHONY: lint
 lint:  ## Lint project files
-	@polymer lint --root src/ --input ${NAME}.html;
+	@polymer lint --input ./src/${NAME}.html;
+
+.PHONY: eslint
+eslint:  ## ESLint project files
+	@eslint --ext .html,.js ./src;
 
 
 # Building -----------------------------------------------------------------------------------

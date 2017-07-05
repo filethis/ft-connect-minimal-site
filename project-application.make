@@ -61,39 +61,23 @@ run-browser-sync-test:  ## Run BrowserSync for tests
 
 # Application -----------------------------------------------------------------------------------
 
-.PHONY: open-url-local
-open-url-local:  ## Open URL of local application
-	@open http://localhost:${LOCAL_PORT};
-
-.PHONY: print-url-local
-print-url-local:  ## Print URL of local application
-	@echo http://localhost:${LOCAL_PORT};
-
-.PHONY: open-url-github-pages
-open-url-github-pages:  ## Open URL of application published on GitHub Pages
+.PHONY: open-app
+open-app:  ## Open URL of application published on GitHub Pages
 	@open https://filethis.github.io/${NAME};
 
-.PHONY: print-url-github-pages
-print-url-github-pages:  ## Print URL of application published on GitHub Pages
+.PHONY: url-app
+url-app:  ## Print URL of application published on GitHub Pages
 	@echo https://filethis.github.io/${NAME};
 
 
 # Docs -----------------------------------------------------------------------------------
 
-.PHONY: open-url-docs-local
-open-url-docs-local:  ## Open URL of local application documentation
-	@open file://`pwd`/docs/index.html;
-
-.PHONY: print-url-docs-local
-print-url-docs-local:  ## Print URL of local application documentation
-	@echo file://`pwd`/docs/index.html;
-
-.PHONY: open-url-docs-github-pages
-open-url-docs-github-pages:  ## Open URL of application documentation published on GitHub Pages
+.PHONY: open-docs
+open-docs:  ## Open URL of application documentation published on GitHub Pages
 	@open https://filethis.github.io/${NAME};
 
-.PHONY: print-url-docs-github-pages
-print-url-docs-github-pages:  ## Print URL of application documentation published on GitHub Pages
+.PHONY: url-docs
+url-docs:  ## Print URL of application documentation published on GitHub Pages
 	@echo https://filethis.github.io/${NAME};
 
 

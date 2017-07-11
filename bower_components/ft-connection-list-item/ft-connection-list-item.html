@@ -12,14 +12,14 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
---><link rel="import" href="../polymer/polymer.html">
-
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+--><link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../iron-label/iron-label.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-spinner/paper-spinner-lite.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../polymer/polymer.html">
+
 <!--
 `ft-connection-list-item`
 An element that renders a single FileThis connection resource as a list item
@@ -73,7 +73,7 @@ An element that renders a single FileThis connection resource as a list item
             <div id="actionButtonAndRefreshDate" class="layout vertical center" hidden="[[_working]]" style="width:120px;">
 
                 <!-- Action button -->
-                <paper-button raised="" id="actionButton" style="width:100px; height:32px; background-color:white" on-click="_onActionButtonClicked">
+                <paper-button raised="" id="actionButton" style="width:100px; height:32px; background-color:white" on-tap="_onActionButtonClicked">
                     <iron-icon id="icon"></iron-icon>
                     <div style="width:3px;"></div>
                     <iron-label id="buttonLabel" style="font-family:Arial; font-size:12px;"></iron-label>
@@ -219,9 +219,9 @@ An element that renders a single FileThis connection resource as a list item
 
                 var checkedDate = new Date(connection.checkedDate);
 
-                const checkedYear = checkedDate.getYear();
-                const year1970 = 117;
-                const hasNeverFetched = (checkedYear < year1970);
+                var checkedYear = checkedDate.getYear();
+                var year1970 = 117;
+                var hasNeverFetched = (checkedYear < year1970);
                 if (hasNeverFetched)
                     return "";
 

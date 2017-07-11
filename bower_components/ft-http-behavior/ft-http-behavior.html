@@ -12,11 +12,13 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
---><link rel="import" href="../polymer/polymer.html">
-
-<link rel="import" href="../ft-error-behavior/ft-error-behavior.html">
+--><link rel="import" href="../ft-error-behavior/ft-error-behavior.html">
+<link rel="import" href="../polymer/polymer.html">
 
 <script>
+
+    // Make sure the "FileThis" namespace exists
+    window.FileThis = window.FileThis || {};
 
     /* Specialize Error class to represent non-200 responses so that callers can handle them specially */
 
@@ -34,10 +36,9 @@ limitations under the License.
      * `ft-http-behavior`
      * A behavior that provides HTTP requests using Promises.
      * @demo demo/index.html
-     * @polymerBehavior FtHttpBehavior
+     * @polymerBehavior FileThis.HttpBehavior
      */
-
-    FtHttpBehavior = {
+    FileThis.HttpBehavior = {
 
         httpPost: function(url, body, options)
         {
@@ -46,7 +47,7 @@ limitations under the License.
 
         httpGet: function(url, options)
         {
-            const nullBody = null;
+            var nullBody = null;
             return this._http('GET', url, nullBody, options)
         },
 
@@ -57,7 +58,7 @@ limitations under the License.
 
         httpDelete: function(url, options)
         {
-            const nullBody = null;
+            var nullBody = null;
             return this._http('DELETE', url, nullBody, options)
         },
 
@@ -65,7 +66,7 @@ limitations under the License.
         {
             return new Promise(function(resolve, reject)
             {
-                const description = method + " " + url;
+                var description = method + " " + url;
 
                 var request = new XMLHttpRequest();
 
@@ -81,10 +82,10 @@ limitations under the License.
                     // Headers
                     if (options.headers)
                     {
-                        const headers = options.headers;
+                        var headers = options.headers;
                         Object.keys(headers).forEach(function(name)
                         {
-                            const value = headers[name];
+                            var value = headers[name];
 
                             switch (name.toLowerCase())
                             {
@@ -104,12 +105,12 @@ limitations under the License.
                     }
 
                     // withCredentials
-                    const optionWithCredentials = options.withCredentials;
+                    var optionWithCredentials = options.withCredentials;
                     if (!!optionWithCredentials)
                         request.withCredentials = optionWithCredentials;
 
                     // responseType
-                    const optionResponseType = options.responseType;
+                    var optionResponseType = options.responseType;
                     if (!!optionResponseType)
                         responseType = optionResponseType;
                 }
@@ -117,8 +118,8 @@ limitations under the License.
                 // On getting a response from the server
                 request.onload = function()
                 {
-                    const status = request.status;
-                    const statusText = request.statusText;
+                    var status = request.status;
+                    var statusText = request.statusText;
 
                     // Get the response, if there is one
                     var response = null;

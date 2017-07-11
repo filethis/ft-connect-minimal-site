@@ -9,11 +9,10 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
---><link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
-
-<link rel="import" href="../paper-button/paper-button.html">
+--><link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../polymer/polymer.html">
 
 
 <dom-module id="ft-labeled-icon-button">
@@ -21,7 +20,6 @@ limitations under the License.
     <template>
         <style include="iron-flex iron-flex-alignment iron-positioning">
 
-            /* Magical mystery sauce! */
             :host([disabled]) {
                 pointer-events: none;
             }
@@ -40,7 +38,7 @@ limitations under the License.
                 <div class="layout vertical center">
 
                     <!-- Icon -->
-                    <iron-icon icon="[[icon]]">
+                    <iron-icon style="--iron-icon-fill-color:var(--ft-labeled-icon-button-icon-fill-color); " icon="[[icon]]">
                     </iron-icon>
 
                     <!-- Label -->
@@ -56,7 +54,9 @@ limitations under the License.
 
     <script>
         Polymer({
+
             is: 'ft-labeled-icon-button',
+
             properties:
             {
                 icon: {
@@ -68,36 +68,23 @@ limitations under the License.
                     value: "Check"
                 },
                 disabled: {
-                    type: Boolean,
+                    type: Object, // Can't use Boolean
                     notify: true,
-                    value: false
+                    value: false,
+                    reflectToAttribute: true  // For sake of the host style above
                 },
                 toggles: {
-                    type: Boolean,
+                    type: Object, // Can't use Boolean
                     notify: true,
                     value: false
                 },
                 active: {
-                    type: Boolean,
+                    type: Object, // Can't use Boolean
                     notify: true,
-                    value: false,
-                    observer: "_activeChanged"
-                },
-                pressed: {
-                    type: Boolean,
-                    notify: true,
-                    value: true,
-                    observer: "_pressedChanged"
+                    value: false
                 }
-            },
-            _activeChanged: function(to, from)
-            {
-                this.pressed = !this.active;
-            },
-            _pressedChanged: function(to, from)
-            {
-                this.active = !this.pressed;
             }
         })
+
     </script>
 </dom-module>

@@ -12,16 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
---><link rel="import" href="../bower_components/polymer/polymer.html">
-
-<link rel="import" href="../bower_components/ft-connect-expand-out/ft-connect-expand-out.html">
+--><link rel="import" href="../bower_components/ft-connect-expand-out/ft-connect-expand-out.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 
 <dom-module id="ft-connect-minimal-site">
 
     <template>
 
         <!-- ft-connect-expand-out -->
-        <ft-connect-expand-out enabled="" server="https://staging.filethis.com" user-account-id="1034" token="OYdRA_tPOQp0Pc9dqL506zr43AJR7Bxb1_75-puM__hi" on-ft-connect-error="_onFileThisConnectError">
+        <ft-connect-expand-out live="" server="https://staging.filethis.com" user-account-id="1034" token="OYdRA_tPOQp0Pc9dqL506zr43AJR7Bxb1_75-puM__hi" on-ft-connect-error="_onFileThisConnectError">
         </ft-connect-expand-out>
 
     </template>
@@ -33,7 +32,7 @@ limitations under the License.
 
             _onFileThisConnectError: function(event)
             {
-                const error = event.detail;
+                var error = event.detail;
                 alert(error);
             }
 

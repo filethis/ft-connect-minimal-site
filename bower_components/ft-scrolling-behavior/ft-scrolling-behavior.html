@@ -16,14 +16,16 @@ limitations under the License.
 
 <script>
 
+    // Make sure the "FileThis" namespace exists
+    window.FileThis = window.FileThis || {};
+
     /**
      * `ft-scrolling-behavior`
      * A behavior that helps with scrolling of elements.
      * @demo demo/index.html
-     * @polymerBehavior FtHttpBehavior
+     * @polymerBehavior FileThis.ScrollingBehavior
      */
-
-    FtScrollingBehavior = {
+    FileThis.ScrollingBehavior = {
 
         listeners: {
             'iron-resize': '_onIronResize'
@@ -59,13 +61,13 @@ limitations under the License.
             scroller.removeEventListener("wheel", this._onWheel);
 
             // Remove scroller from our list
-            const index = this._managedScrollers.indexOf(scroller);
+            var index = this._managedScrollers.indexOf(scroller);
             this._managedScrollers.splice(index, 1);
         },
 
         _scrollerIsManaged: function(scroller)
         {
-            const index = this._managedScrollers.indexOf(scroller);
+            var index = this._managedScrollers.indexOf(scroller);
             return (index >= 0);
         },
 
@@ -77,14 +79,14 @@ limitations under the License.
                 // Calculate and set the scroller's width
                 if (this.clientWidth !== 0)  // Is this necessary? Why?
                 {
-                    const newWidth = this._calculateScrollerWidth(scroller);
+                    var newWidth = this._calculateScrollerWidth(scroller);
                     scroller.style.width = newWidth + "px";
                 }
 
                 // Calculate and set the scroller's height
                 if (this.clientHeight !== 0)  // Is this necessary? Why?
                 {
-                    const newHeight = this._calculateScrollerHeight(scroller);
+                    var newHeight = this._calculateScrollerHeight(scroller);
                     scroller.style.height = newHeight + "px";
                 }
             }.bind(this));
@@ -107,25 +109,25 @@ limitations under the License.
         _onWheel: function(event)
         {
             // If vertical scroll
-            const deltaY = event.deltaY;
-            const vertical = (deltaY !== 0);
+            var deltaY = event.deltaY;
+            var vertical = (deltaY !== 0);
             if (vertical)
             {
-                const up = (deltaY < 0);
+                var up = (deltaY < 0);
                 if (up)
                 {
-                    const viewportTop = this.scrollTop;
-                    const alreadyAtTop = (viewportTop === 0);
+                    var viewportTop = this.scrollTop;
+                    var alreadyAtTop = (viewportTop === 0);
                     if (alreadyAtTop)
                         event.preventDefault();
                     return;
                 }
 
-                const down = (deltaY > 0);
+                var down = (deltaY > 0);
                 if (down)
                 {
-                    const viewportBottom = this.scrollTop + this.offsetHeight;
-                    const alreadyAtBottom = (viewportBottom >= this.scrollHeight);
+                    var viewportBottom = this.scrollTop + this.offsetHeight;
+                    var alreadyAtBottom = (viewportBottom >= this.scrollHeight);
                     if (alreadyAtBottom)
                         event.preventDefault();
                     return;
@@ -134,25 +136,25 @@ limitations under the License.
             }
 
             // If horizontal scroll
-            const deltaX = event.deltaX;
-            const horizontal = (deltaX !== 0);
+            var deltaX = event.deltaX;
+            var horizontal = (deltaX !== 0);
             if (horizontal)
             {
-                const left = (deltaX < 0);
+                var left = (deltaX < 0);
                 if (left)
                 {
-                    const viewportLeft = this.scrollLeft;
-                    const alreadyAtLeft = (viewportLeft === 0);
+                    var viewportLeft = this.scrollLeft;
+                    var alreadyAtLeft = (viewportLeft === 0);
                     if (alreadyAtLeft)
                         event.preventDefault();
                     return;
                 }
 
-                const right = (deltaX > 0);
+                var right = (deltaX > 0);
                 if (right)
                 {
-                    const viewportRight = this.scrollLeft + this.offsetWidth;
-                    const alreadyAtRight = (viewportRight >= this.scrollWidth);
+                    var viewportRight = this.scrollLeft + this.offsetWidth;
+                    var alreadyAtRight = (viewportRight >= this.scrollWidth);
                     if (alreadyAtRight)
                         event.preventDefault();
                     return;

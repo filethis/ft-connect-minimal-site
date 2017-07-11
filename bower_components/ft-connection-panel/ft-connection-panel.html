@@ -12,17 +12,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
---><link rel="import" href="../polymer/polymer.html">
-
+--><link rel="import" href="../ft-confirmation-dialog/ft-confirmation-dialog.html">
+<link rel="import" href="../ft-connection-details/ft-connection-details.html">
+<link rel="import" href="../ft-connection-list/ft-connection-list.html">
+<link rel="import" href="../ft-labeled-icon-button/ft-labeled-icon-button.html">
+<link rel="import" href="../ft-scrolling-behavior/ft-scrolling-behavior.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../iron-label/iron-label.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
-
-<link rel="import" href="../ft-connection-list/ft-connection-list.html">
-<link rel="import" href="../ft-connection-details/ft-connection-details.html">
-<link rel="import" href="../ft-labeled-icon-button/ft-labeled-icon-button.html">
-<link rel="import" href="../ft-confirmation-dialog/ft-confirmation-dialog.html">
-<link rel="import" href="../ft-scrolling-behavior/ft-scrolling-behavior.html">
+<link rel="import" href="../polymer/polymer.html">
 
 
 <!--
@@ -61,13 +59,13 @@ An element that displays a list of FileThis connection resources
                     <div class="flex"></div>
 
                     <!-- Delete button -->
-                    <ft-labeled-icon-button id="deleteButton" icon="delete" label="Delete" disabled="[[!selectedConnection]]" hidden$="[[!showDeleteButton]]" on-click="_onDeleteButtonClicked">
+                    <ft-labeled-icon-button id="deleteButton" icon="delete" label="Delete" disabled="[[!selectedConnection]]" hidden$="[[!showDeleteButton]]" on-tap="_onDeleteButtonClicked">
                     </ft-labeled-icon-button>
 
                 </div>
 
                 <!-- List -->
-                <div id="connectionListScroller" style="overflow:auto; ">
+                <div id="connectionListScroller" style="overflow:auto; background-color:white; ">
                     <ft-connection-list id="connectionList" connections="[[connections]]" selected-connection="{{selectedConnection}}">
                     </ft-connection-list>
                 </div>
@@ -103,7 +101,7 @@ An element that displays a list of FileThis connection resources
 
             behaviors: [
                 Polymer.IronResizableBehavior,
-                FtScrollingBehavior
+                FileThis.ScrollingBehavior
             ],
 
             observers: [
@@ -152,7 +150,7 @@ An element that displays a list of FileThis connection resources
                 /** Show a title string. */
                 showTitle:
                 {
-                    type: Boolean,
+                    type: Object,  // Can't use Boolean
                     value: true,
                     observer: "_showButtonChanged"
                 },
@@ -167,7 +165,7 @@ An element that displays a list of FileThis connection resources
                 /** Show a button that lets users delete the selected connection. */
                 showDeleteButton:
                 {
-                    type: Boolean,
+                    type: Object,  // Can't use Boolean
                     value: true,
                     observer: "_showButtonChanged"
                 },
@@ -175,7 +173,7 @@ An element that displays a list of FileThis connection resources
                 /** Show a details panel to the right of the main list when a connection is selected. */
                 showDetailsPanel:
                 {
-                    type: Boolean,
+                    type: Object,  // Can't use Boolean
                     value: false
                 },
 
@@ -193,7 +191,7 @@ An element that displays a list of FileThis connection resources
 
             _calculateScrollerHeight: function(scroller)
             {
-                const headerHeight = this.$.header.offsetHeight;
+                var headerHeight = this.$.header.offsetHeight;
                 return this.clientHeight - headerHeight;
             },
 
@@ -219,14 +217,14 @@ An element that displays a list of FileThis connection resources
 
             _onDeleteButtonClicked: function(event)
             {
-                const overrideWarning = event.metaKey;
+                var overrideWarning = event.metaKey;
                 if (overrideWarning)
                 {
                     this.fire('delete', this.selectedConnection);
                     return;
                 }
 
-                const prompt = "Are you sure you want to delete the selected connection?";
+                var prompt = "Are you sure you want to delete the selected connection?";
                 return this.$.confirmationDialog.confirm(prompt, "Delete Connection")
                     .then(function(choice)
                     {

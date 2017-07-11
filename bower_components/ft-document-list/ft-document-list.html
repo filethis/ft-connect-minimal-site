@@ -12,13 +12,12 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
---><link rel="import" href="../polymer/polymer.html">
-
+--><link rel="import" href="../ft-document-list-item/ft-document-list-item.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../iron-list/iron-list.html">
 <link rel="import" href="../iron-label/iron-label.html">
+<link rel="import" href="../iron-list/iron-list.html">
 <link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../ft-document-list-item/ft-document-list-item.html">
+<link rel="import" href="../polymer/polymer.html">
 
 <!--
 `ft-document-list`
@@ -77,7 +76,7 @@ An element that renders a list of FileThis documents
 
             _onDocumentsChanged: function(to, from)
             {
-                var foo = "bar";
+                this.$.documentList.fire('resize')
             }
 
         });

@@ -39,11 +39,11 @@ An element that displays a list of FileThis connection resources
         </style>
 
         <!-- List -->
-        <iron-list selection-enabled="" id="connectionList" items="[[connections]]" selected-item="{{selectedConnection}}" as="connection" style="width:432px; ">
+        <iron-list selection-enabled="" id="connectionList" items="[[connections]]" selected-item="{{selectedConnection}}" as="connection">
 
             <!-- Connection item template -->
             <template>
-                <ft-connection-list-item style="border-bottom:1px solid #DDD;" connection="[[connection]]" selected$="[[selected]]">
+                <ft-connection-list-item style="border-bottom:1px solid #DDD; " connection="[[connection]]" selected$="[[selected]]">
                 </ft-connection-list-item>
             </template>
         </iron-list>

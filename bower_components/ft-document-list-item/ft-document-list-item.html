@@ -37,7 +37,7 @@ An element that renders information about a FileThis document in a parent list
             }
         </style>
 
-        <div id="interior" class="layout horizontal center" style="height:130px; padding-left:20px; padding-right:25px;">
+        <div id="interior" class="layout horizontal center" style="width:600px; height:130px; padding-left:20px; padding-right:25px;">
 
             <!-- Thumbnail -->
             <div style="box-shadow: 3px 3px 3px #888888;border:1px solid #DDD;">
@@ -124,9 +124,9 @@ An element that renders information about a FileThis document in a parent list
             {
                 var interior = this.$.interior;
                 if (this.selected)
-                    interior.style.backgroundColor = "#F6F6F6";
+                    this.style.backgroundColor = "#F6F6F6";
                 else
-                    interior.style.backgroundColor = "#FFFFFF";
+                    this.style.backgroundColor = "#FFFFFF";
             },
 
             _dateToString: function(dateString)

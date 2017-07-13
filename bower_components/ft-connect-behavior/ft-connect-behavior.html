@@ -152,6 +152,30 @@ limitations under the License.
                 value: true
             },
 
+            /** When set, various debugging options are enabled. */
+            debug:
+            {
+                type: Object,
+                value: false,
+                notify: true
+            },
+
+            /** When set, fake local data is used. */
+            demo:
+            {
+                type: Object,
+                value: false,
+                notify: true
+            },
+
+            /** The relative path where demo data can be found. Must have trailing slash. */
+            demoDataPath:
+            {
+                type: String,
+                value: "../bower_components/ft-connect-behavior/demo/data/",
+                notify: true
+            },
+
             _uploadableFileTypes:
             {
                 type: String,
@@ -253,7 +277,7 @@ limitations under the License.
             this._processingChangeNotifications = false;
 
             if (this.live)
-                this._getAllData();
+                this.getAllData();
         },
 
         _onSelectedFilterIdChanged: function(to, from)
@@ -355,6 +379,9 @@ limitations under the License.
 
         _downloadDocument: function(document)
         {
+            if (this.demo)
+                return Promise.resolve();
+
             // NOTE: This is not an ideal way to download documents, but I could not get the standard method
             // to work. See: _downloadDocumentShouldWorkButDoesNot(). Here, we have to make a request to get
             // the filename before we download the actual file. Also, because we can't add headers to the
@@ -385,6 +412,9 @@ limitations under the License.
 
         _downloadDocumentShouldWorkButDoesNot: function(document)
         {
+            if (this.demo)
+                return Promise.resolve();
+
             // TODO: Spent a lot of time trying to get this standard method for downloading files to work.
             // Best I can figure, this is some kind of cross-site problem. When call the click() method,
             // nothing happens...
@@ -461,6 +491,9 @@ limitations under the License.
 
         _uploadFile: function(file)
         {
+            if (this.demo)
+                return Promise.resolve([]);
+
             // Create a FormData instance
             var formData = new FormData();
 
@@ -557,6 +590,9 @@ limitations under the License.
 
         _startManualFetch: function(connection)
         {
+            if (this.demo)
+                return Promise.resolve();
+
             // TODO: Shouldn't we disable the fetch button to prevent double-clicking?
             // Perhaps anticipate the change of connection "state" on the server by changing it immediately.
 
@@ -600,7 +636,7 @@ limitations under the License.
             this.$.modalInteractionDialog.open();
         },
 
-        _getAllData: function()
+        getAllData: function()
         {
             Promise.resolve()
                 .then(this._getAccount.bind(this))  // Rest of promise chain depends on having the account record
@@ -627,6 +663,16 @@ limitations under the License.
 
         _getAccount: function()
         {
+            if (this.demo)
+            {
+                return new Promise(function(fulfill)
+                {
+                    var account = {"id": "123"};  // TODO: Move data into file to have more complete properties?
+                    this.account = account;
+                    fulfill(account)
+                }.bind(this));
+            }
+
             var url = this.server + this.apiPath +
                 "/accounts/" + this.userAccountId;
             var options = this._buildHttpOptions();
@@ -640,6 +686,17 @@ limitations under the License.
 
         _getSources: function()
         {
+            if (this.demo)
+            {
+                var demoDataUrl = this.demoDataPath + "fake-sources.json";
+                return this.httpGet(demoDataUrl)
+                    .then(function(sources)
+                    {
+                        this.sources = sources;
+                        return sources;
+                    }.bind(this));
+            }
+
             var url = this.server + this.apiPath +
                 "/sources";
             if (!!this.selectedFilterId)
@@ -648,6 +705,8 @@ limitations under the License.
             return this.httpGet(url, options)
                 .then(function(sources)
                 {
+                    if (this.debug && this.selectedFilterId === "all")
+                        this._prependFakeSource(sources);
                     this.sources = sources;
                     return sources;
                 }.bind(this));
@@ -655,6 +714,17 @@ limitations under the License.
 
         _getConnections: function()
         {
+            if (this.demo)
+            {
+                var demoDataUrl = this.demoDataPath + "fake-connections.json";
+                return this.httpGet(demoDataUrl)
+                    .then(function(connections)
+                    {
+                        this.connections = connections;
+                        return connections;
+                    }.bind(this));
+            }
+
             var url = this.server + this.apiPath +
                 "/connections";
             var options = this._buildHttpOptions();
@@ -672,6 +742,9 @@ limitations under the License.
 
         _getConnection: function(connectionId)
         {
+            if (this.demo)
+                return Promise.resolve();  // Will not make the caller happy...
+
             var url = this.server + this.apiPath +
                 "/connections/" + connectionId;
             var options = this._buildHttpOptions();
@@ -685,6 +758,9 @@ limitations under the License.
 
         _onDeleteConnection: function(connection)
         {
+            if (this.demo)
+                return Promise.resolve();
+
             var url = this.server + this.apiPath +
                 "/connections/" + connection.id;
             var options = this._buildHttpOptions();
@@ -694,6 +770,23 @@ limitations under the License.
 
         _getDocuments: function()
         {
+            if (this.demo)
+            {
+                var demoDataUrl = this.demoDataPath + "fake-documents.json";
+                return this.httpGet(demoDataUrl)
+                    .then(function(documents)
+                    {
+                        // Tweak the image paths
+                        documents.forEach(function(document) {
+                            var newThumbnailUrl = this.demoDataPath + document.thumbnailUrl;
+                            document.thumbnailUrl = newThumbnailUrl;
+                        }.bind(this));
+
+                        this.documents = documents;
+                        return documents;
+                    }.bind(this));
+            }
+
             var url = this.server + this.apiPath +
                 "/documents";
             var options = this._buildHttpOptions();
@@ -708,6 +801,9 @@ limitations under the License.
 
         _getDocument: function(documentId)
         {
+            if (this.demo)
+                return Promise.resolve();  // Will not make the caller happy...
+
             var url = this.server + this.apiPath +
                 "/documents/" + documentId;
             var options = this._buildHttpOptions();
@@ -721,6 +817,9 @@ limitations under the License.
 
         _onDeleteDocument: function(document)
         {
+            if (this.demo)
+                return Promise.resolve();
+
             var url = this.server + this.apiPath +
                 "/documents/" + document.id;
             var options = this._buildHttpOptions();
@@ -738,6 +837,24 @@ limitations under the License.
         {
             this._interactionRequests = [];
 
+            if (this.demo)
+            {
+                var version = this.interactionVersion;
+                var url;
+                if (version === "2.0.0")
+                    url = this.demoDataPath + "fake-interaction-requests-2_0_0.json";
+                else if (version === "1.0.0")
+                    url = this.demoDataPath + "fake-interaction-requests-1_0_0.json";
+                else
+                    throw new Error("Unrecognized user interaction schema version: " + version);
+
+                return this.httpGet(url)
+                    .then(function(response)
+                    {
+                        this.interactionRequests = response;
+                    }.bind(this));
+            }
+
             var connectionIds = this.connections.map(function(connection) { return connection.id; });
             var promises = connectionIds.map(this._getConnectionInteractionRequests.bind(this));
 
@@ -753,6 +870,9 @@ limitations under the License.
 
         _getInteractionRequest: function(connectionId, interactionId)
         {
+            if (this.demo)
+                return Promise.resolve();  // Will not make the caller happy...
+
             var url = this.server + this.apiPath +
                 "/accounts/" + this.account.id +
                 "/connections/" + connectionId +
@@ -770,6 +890,9 @@ limitations under the License.
 
         _getConnectionInteractionRequests: function(connectionId)
         {
+            if (this.demo)
+                return Promise.resolve([]);
+
             var url = this.server + this.apiPath +
                 "/accounts/" + this.account.id +
                 "/connections/" + connectionId +
@@ -816,6 +939,9 @@ limitations under the License.
 
         _createConnection: function(username, password, source)
         {
+            if (this.demo)
+                return Promise.resolve();
+
             var sourceId = source.id;
 
             var body =
@@ -939,7 +1065,7 @@ limitations under the License.
                     {
                         // Fall back to doing a full refresh of all data
                         log.warn("Falling back on doing a full refresh of all data after failure to use change notifications.");
-                        this._getAllData();
+                        this.getAllData();
                     }
                     else
                     {
@@ -958,6 +1084,9 @@ limitations under the License.
 
         _getAllChangeNotifications: function()
         {
+            if (this.demo)
+                return Promise.resolve([]);
+
             var url = this.server + this.apiPath + "/changes";
 
             var ordinal = this._lastChangeNotificationHandledOrdinal;
@@ -1497,6 +1626,32 @@ limitations under the License.
                     "X-FileThis-Session": this.token
                 }
             };
+        },
+
+
+        // Miscellaneous
+
+        _prependFakeSource: function(sources)
+        {
+            var fakeSource =
+            {
+                "id": 100100,
+                "name": "Test Site",
+                "type": "util",
+                "state": "live",
+                "homePageUrl": "https://fake-company-site.herokuapp.com",
+                "phone": "(800) 555-5555",
+                "logoPath": "logos/Logo_FakeBank.png",
+                "logo": "Logo_FakeBank.png",
+                "logoUrl": "https://filethis.com/static/logos/72/Logo_FakeBank.png",
+                "note": "",
+                "info": "",
+                "pattern": "",
+                "isNew": false,
+                "isPopular": false
+            };
+
+            sources.unshift(fakeSource);
         },
 
         _handleError: function(error)

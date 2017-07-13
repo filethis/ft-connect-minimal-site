@@ -38,11 +38,11 @@ An element that renders a list of FileThis documents
             }
         </style>
 
-        <iron-list selection-enabled="" id="documentList" items="[[documents]]" selected-item="{{selectedDocument}}" as="item" style="width:700px;">
+        <iron-list selection-enabled="" id="documentList" items="[[documents]]" selected-item="{{selectedDocument}}" as="item">
 
             <!-- Document item template -->
             <template>
-                <ft-document-list-item style="border-bottom:1px solid #DDD;" document="[[item]]" selected$="[[selected]]">
+                <ft-document-list-item style="border-bottom:1px solid #DDD; " document="[[item]]" selected$="[[selected]]">
                 </ft-document-list-item>
             </template>
         </iron-list>

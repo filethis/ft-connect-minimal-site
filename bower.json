@@ -3,7 +3,7 @@
   "description": "A minimal working example of a website that embeds a FileThis Connect element.",
   "main": "index.html",
   "dependencies": {
-    "ft-connect-expand-out": "filethis/ft-connect-expand-out#^0.0.13",
+    "ft-connect-expand-out": "filethis/ft-connect-expand-out#^$NEW_VERSION",
     "iron-label": "PolymerElements/iron-label#1 - 2",
     "iron-list": "PolymerElements/iron-list#1 - 2",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#1 - 2",

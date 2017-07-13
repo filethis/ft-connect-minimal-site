@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/bower_components" />
+      <excludeFolder url="file://$MODULE_DIR$/github-pages-tmp" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
     <orderEntry type="inheritedJdk" />

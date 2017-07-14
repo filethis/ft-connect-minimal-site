@@ -35,7 +35,7 @@ An element that renders a FileThis document thumbnail in a grid list.
             }
         </style>
 
-        <div id="interior" class="layout vertical center" style="padding-left:15px; padding-top:15px; padding-right:15px;" on-tap="_ignoreClick">
+        <div id="interior" class="layout vertical center" style="padding-left:15px; padding-top:15px; padding-right:15px; ">
 
             <!-- Thumbnail -->
             <div id="thumb" style="box-shadow: 3px 3px 3px #888888;border:1px solid #DDD;">
@@ -87,10 +87,10 @@ An element that renders a FileThis document thumbnail in a grid list.
                     interior.style.backgroundColor = "#FFFFFF";
             },
 
-            _ignoreClick: function(event, detail)
-            {
-                event.stopPropagation(); // So that we don't toggle the item selection
-            }
+//            _ignoreClick: function(event, detail)
+//            {
+//                event.stopPropagation(); // So that we don't toggle the item selection
+//            }
 
         });
     </script>

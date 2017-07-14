@@ -20,18 +20,21 @@ limitations under the License.
 <link rel="import" href="../ft-source-panel/ft-source-panel.html">
 <link rel="import" href="../ft-user-interaction-form/ft-user-interaction-form.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../paper-tabs/paper-tab.html">
 <link rel="import" href="../polymer/polymer.html">
 
-
 <!--
-`ft-connect-expand-out`
+`ft-connect-tabbed`
 A drop-in HTML 5 element that quickly, securely, and flexibly integrates your application with the FileThis API.
 
 @demo demo/index.html
 -->
 
-<dom-module id="ft-connect-expand-out">
+<dom-module id="ft-connect-tabbed">
 
     <template>
 
@@ -43,41 +46,67 @@ A drop-in HTML 5 element that quickly, securely, and flexibly integrates your ap
             }
         </style>
 
+        <style is="custom-style">
+            paper-checkbox.white {
+              --paper-checkbox-checked-color: white;
+              --paper-checkbox-checked-ink-color: white;
+              --paper-checkbox-unchecked-color: white;
+              --paper-checkbox-unchecked-ink-color: white;
+              --paper-checkbox-label-color: white;
+            }
+
+            /* We use links in our tab bar so that routing will work, but want the text to look "normal" */
+            a {
+                color:black;
+                border:none;
+                text-decoration:none;
+                height: auto !important;
+            }
+
+            #panelTabs
+            {
+                --paper-tabs-selection-bar-color:blue;
+            }
+
+        </style>
+
         <app-route route="{{route}}" pattern="/:panelName" data="{{_routeData}}">
         </app-route>
 
-        <!-- Vertical layout of header bar and panels-->
-        <div class="layout vertical" style="height:493px; ">
+        <div class="layout vertical start" style="width:100%; height:100%; border:1px solid #DDD; ">
 
-            <!-- Horizontal layout of panels-->
-            <div id="panels" class="layout horizontal flex">
+            <!-- Panel Tabs -->
+            <paper-tabs id="panelTabs" attr-for-selected="name" selected="{{_selectedPanelName}}" style="font-size:16pt; ">
+                <paper-tab name="sources"><a href="#/sources" tabindex="-1">Sites</a></paper-tab>
+                <paper-tab name="connections"><a href="#/connections" tabindex="-1">Connections</a></paper-tab>
+                <paper-tab name="documents"><a href="#/documents" tabindex="-1">Documents</a></paper-tab>
+            </paper-tabs>
 
-                <!-- Source Panel -->
-                <ft-source-panel id="sourcesPanel" style="width:400px; border:1px solid #DDD; " sources="[[sources]]" selected-filter-id="{{selectedFilterId}}">
-                </ft-source-panel>
+            <!-- Panels -->
+            <!-- Have to wrap with a div, or the iron-pages will steal all of the height from the paper-tabs above. Bug? -->
+            <div class="layout horizontal center" style="width:100%; height:100%; border-top:1px solid #DDD; ">
 
-                <!-- Spacer -->
-                <div style="width:40px; " hidden="[[_hideConnectionsPanel]]">
-                </div>
+                <iron-pages id="panels" style="width:100%; height:100%; " attr-for-selected="name" selected="{{_selectedPanelName}}">
 
-                <!-- Connection Panel -->
-                <ft-connection-panel id="connectionsPanel" style="width:433px; border:1px solid #DDD; " hidden="[[_hideConnectionsPanel]]" connections="[[connections]]" sources="[[sources]]">
-                </ft-connection-panel>
+                    <!-- Source panel -->
+                    <ft-source-panel id="sourcesPanel" name="sources" style="width:100%; height:100%; " show-title="false" selected-filter-id="{{selectedFilterId}}" sources="[[sources]]">
+                    </ft-source-panel>
 
-                <!-- Spacer -->
-                <div style="width:40px; " hidden="[[_hideDocumentPanel]]">
-                </div>
+                    <!-- Connection panel -->
+                    <ft-connection-panel id="connectionsPanel" name="connections" style="width:100%; height:100%; " show-title="false" connections="[[connections]]" sources="[[sources]]">
+                    </ft-connection-panel>
 
-                <!-- Document Panel -->
-                <ft-document-panel id="documentsPanel" style="border:1px solid #DDD; min-width:200px" hidden="[[_hideDocumentPanel]]" show-grid-button="false" show-list-button="false" show-preview-button="false" show-upload-button="false" show-download-button="false" show-delete-button="false" show-document-count="false" documents="[[documents]]">
-                </ft-document-panel>
+                    <!-- Document panel -->
+                    <ft-document-panel id="documentsPanel" name="documents" style="width:100%; height:100%; " show-title="false" show-grid-button="true" show-list-button="true" show-preview-button="false" show-upload-button="false" show-download-button="false" show-delete-button="true" show-document-count="false" documents="[[documents]]">
+                    </ft-document-panel>
+
+                </iron-pages>
             </div>
-
         </div>
 
         <!-- User interaction dialog -->
         <paper-dialog modal="" id="modalInteractionDialog" style="width:450px;
-                padding-left:40px; padding-top:12px; padding-right:40px; padding-bottom:5px;">
+                      padding-left:40px; padding-top:12px; padding-right:40px; padding-bottom:5px;">
 
             <ft-user-interaction-form id="interactionForm" version="[[interactionVersion]]" request="[[_interactionRequest]]" response="{{_interactionResponse}}" on-submit-response="_onSubmitInteractionResponse" on-button-clicked="_onInteractionFormButtonClicked" style="background:white; border:1px solid #DDD;">
             </ft-user-interaction-form>
@@ -98,17 +127,16 @@ A drop-in HTML 5 element that quickly, securely, and flexibly integrates your ap
     <script>
         Polymer({
 
-            is: 'ft-connect-expand-out',
+            is: 'ft-connect-tabbed',
 
             behaviors: [
                 FileThis.ConnectBehavior,
-                FileThis.ErrorBehavior, FileThis.HttpBehavior // TODO: Why do we have to include these when ConnectBehavior already does?
+                FileThis.ErrorBehavior, FileThis.HttpBehavior // TODO: Why do we have to include these when ConnectBehavior aready does?
             ],
 
             listeners:
             {
-                'connections-changed': '_onConnectionsChanged',
-                'documents-changed': '_onDocumentsChanged'
+                'commit': '_onCommitLocal'
             },
 
             properties: {
@@ -124,35 +152,43 @@ A drop-in HTML 5 element that quickly, securely, and flexibly integrates your ap
                     observer: "_onRouteDataChanged"
                 },
 
-                _hideConnectionsPanel: {
-                    type: Boolean,
-                    value: true
-                },
-
-                _hideDocumentPanel: {
-                    type: Boolean,
-                    value: true
+                /** Name of the selected panel. One of: "sources", "connections", or "documents". */
+                _selectedPanelName:
+                {
+                    type: String,
+                    value: "sources",
+                    observer: "_onSelectedPanelNameChanged"
                 }
+
+            },
+
+
+            // Application _routeData members ------------------------------------------------------------------
+
+            ready: function()
+            {
+                this.async(function()
+                {
+                    this._selectedPanelName = "sources";
+                })
             },
 
             _onRouteDataChanged: function(to, from)
             {
                 if (!this._routeData)
                     return;
-
-                // TODO
+                if (!this._selectedPanelName)
+                    return;
+                this._selectedPanelName = this._routeData.panelName;
             },
 
-            _onConnectionsChanged: function()
+            _onSelectedPanelNameChanged: function(to, from)
             {
-                var hideConnectionsPanel = (this.connections.length === 0);
-                this._hideConnectionsPanel = hideConnectionsPanel;
-            },
-
-            _onDocumentsChanged: function()
-            {
-                var _hideDocumentPanel = (this.documents.length === 0);
-                this._hideDocumentPanel = _hideDocumentPanel;
+                if (!this._routeData)
+                    return;
+                if (!this._selectedPanelName)
+                    return;
+                this._routeData.panelName = this._selectedPanelName;
             },
 
 
@@ -217,7 +253,6 @@ A drop-in HTML 5 element that quickly, securely, and flexibly integrates your ap
 //                    }.bind(this));
 //            },
 
-
             poseNextPendingInteractionRequest: function()
             {
                 if (this._interactionRequests.length === 0)
@@ -239,8 +274,16 @@ A drop-in HTML 5 element that quickly, securely, and flexibly integrates your ap
                 if (!this.poseUserInteractionsAutomatically)
                     return;
                 return this.poseNextPendingInteractionRequest();
+            },
+
+            _onCommitLocal: function(event)
+            {
+                var origin = event.path[0];
+                if (origin.id === "createConnectionDialog")
+                    this._selectedPanelName = "connections";  // TODO: Make this a configurable option?
             }
 
         });
     </script>
 </dom-module>
+

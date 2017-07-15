@@ -24,12 +24,12 @@ limitations under the License.
 
 
 <!--
-`ft-connection-panel`
-An element that displays a list of FileThis connection resources
+`<ft-connection-panel>`
 
-@demo demo/index.html
+This element displays a list of FileThis connection resources. Above the list is a header area that can display a title and a delete button. Which header elements are displayed is configurable.
+
+@demo
 -->
-
 <dom-module id="ft-connection-panel">
 
     <template>
@@ -141,13 +141,14 @@ An element that displays a list of FileThis connection resources
                     value: []
                 },
 
+                /** True when at least one of the header widgets is displayed. When false, the header is hidden. */
                 _showHeader:
                 {
                     type: Boolean,
                     value: true
                 },
 
-                /** Show a title string. */
+                /** Show a title string in the header. */
                 showTitle:
                 {
                     type: Object,  // Can't use Boolean
@@ -162,24 +163,30 @@ An element that displays a list of FileThis connection resources
                     value: "Connections"
                 },
 
-                /** Show a button that lets users delete the selected connection. */
+                /**
+                 * Show a button in the header that lets users delete the selected connection.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values.
+                 *
+                 * @type {boolean}
+                 */
                 showDeleteButton:
                 {
-                    type: Object,  // Can't use Boolean
+                    type: Object,
                     value: true,
                     observer: "_showButtonChanged"
                 },
 
-                /** Show a details panel to the right of the main list when a connection is selected. */
+                /**
+                 * Show a details panel to the right of the main list when a connection is selected.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values.
+                 *
+                 * @type {boolean}
+                 */
                 showDetailsPanel:
                 {
-                    type: Object,  // Can't use Boolean
-                    value: false
-                },
-
-                _showDetailsPanel:
-                {
-                    type: Boolean,
+                    type: Object,
                     value: false
                 }
             },

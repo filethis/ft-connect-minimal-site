@@ -21,12 +21,12 @@ limitations under the License.
 <link rel="import" href="../polymer/polymer.html">
 
 <!--
-`ft-connection-list-item`
-An element that renders a single FileThis connection resource as a list item
+`<ft-connection-list-item>`
 
-@demo demo/index.html
+This element displays a single FileThis connection resource, suitable for use in vertical list of other connections.
+
+@demo
 -->
-
 <dom-module id="ft-connection-list-item">
 
     <template>
@@ -133,6 +133,7 @@ An element that renders a single FileThis connection resource as a list item
                     observer: "_onSelectedChanged"
                 },
 
+                /** True when the connection is in a "working" state. Makes an indeterminate progress indicator spin. */
                 _working: {
                     type: Boolean,
                     value: false

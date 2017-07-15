@@ -25,12 +25,12 @@ limitations under the License.
 
 
 <!--
-`ft-document-panel`
-A panel that displays a list of FileThis documents
+`<ft-document-panel>`
 
-@demo demo/index.html
+This element displays a list of FileThis document resources. Above the list is a header area that can display a title and several buttons that affect how the document items are displayed, or operate on the selected documents. Which header elements are displayed is configurable.
+
+@demo
 -->
-
 <dom-module id="ft-document-panel">
 
     <template>
@@ -207,10 +207,16 @@ A panel that displays a list of FileThis documents
                     value: 0
                 },
 
-                /** Show a title string. */
+                /**
+                 * Show a title string.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values .
+                 *
+                 * @type {boolean}
+                 */
                 showTitle:
                 {
-                    type: Object,  // Can't use Boolean
+                    type: Object,
                     value: true,
                     observer: "_showButtonChanged"
                 },
@@ -230,58 +236,100 @@ A panel that displays a list of FileThis documents
                     value: "grid"
                 },
 
-                /** Show a button that lets users choose to view documents in a grid. */
+                /**
+                 * Show a button that lets users choose to view documents in a grid.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values .
+                 *
+                 * @type {boolean}
+                 */
                 showGridButton:
                 {
-                    type: Object,  // Can't use Boolean
+                    type: Object,
                     value: true,
                     observer: "_showButtonChanged"
                 },
 
-                /** Show a button that lets users choose to view documents in a list. */
+                /**
+                 * Show a button that lets users choose to view documents in a list.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values .
+                 *
+                 * @type {boolean}
+                 */
                 showListButton:
                 {
-                    type: Object,  // Can't use Boolean
+                    type: Object,
                     value: true,
                     observer: "_showButtonChanged"
                 },
 
-                /** Show a button that lets users choose to preview the selected document. */
+                /**
+                 * Show a button that lets users choose to preview the selected document.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values .
+                 *
+                 * @type {boolean}
+                 */
                 showPreviewButton:
                 {
-                    type: Object,  // Can't use Boolean
+                    type: Object,
                     value: true,
                     observer: "_showButtonChanged"
                 },
 
-                /** Show a button that lets users upload document files. */
+                /**
+                 * Show a button that lets users upload document files.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values .
+                 *
+                 * @type {boolean}
+                 */
                 showUploadButton:
                 {
-                    type: Object,  // Can't use Boolean
+                    type: Object,
                     value: true,
                     observer: "_showButtonChanged"
                 },
 
-                /** Show a button that lets users download file for the selected document. */
+                /**
+                 * Show a button that lets users download file for the selected document.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values .
+                 *
+                 * @type {boolean}
+                 */
                 showDownloadButton:
                 {
-                    type: Object,  // Can't use Boolean
+                    type: Object,
                     value: true,
                     observer: "_showButtonChanged"
                 },
 
-                /** Show a button that lets users delete the selected document. */
+                /**
+                 * Show a button that lets users delete the selected document.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values .
+                 *
+                 * @type {boolean}
+                 */
                 showDeleteButton:
                 {
-                    type: Object,  // Can't use Boolean
+                    type: Object,
                     value: true,
                     observer: "_showButtonChanged"
                 },
 
-                /** Show count of documents. */
+                /**
+                 * Show count of documents.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values .
+                 *
+                 * @type {boolean}
+                 */
                 showDocumentCount:
                 {
-                    type: Object,  // Can't use Boolean
+                    type: Object,
                     value: true,
                     observer: "_showButtonChanged"
                 },
@@ -293,30 +341,35 @@ A panel that displays a list of FileThis documents
                     value: ""
                 },
 
+                /** True when at least one of the header widgets is displayed. When false, the header is hidden. */
                 _showButtonBar:
                 {
                     type: Boolean,
                     value: true
                 },
 
+                /** Horizontal space to use between the title and any buttons that follow to the right. */
                 _titleSpacerWidth:
                 {
                     type: Number,
                     value: 30
                 },
 
+                /** Horizontal space to use between the last view-type button and any buttons that follow to the right. */
                 _viewButtonGroupSpacerWidth:
                 {
                     type: Number,
                     value: 30
                 },
 
+                /** Horizontal space to use between the last upload/download button and any buttons that follow to the right. */
                 _uploadDownloadButtonGroupSpacerWidth:
                 {
                     type: Number,
                     value: 30
                 },
 
+                /** True if any document is selected. Used to enable/disable buttons that can operate on a selection. */
                 _haveSelection:
                 {
                     type: Boolean,

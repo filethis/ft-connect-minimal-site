@@ -21,12 +21,12 @@ limitations under the License.
 
 
 <!--
-`ft-confirmation-dialog`
-A configurable confirmation dialog that returns a Promise when posed.
+`<ft-confirmation-dialog>`
 
-@demo demo/index.html
+An element that provides a configurable alert or confirmation dialog that returns a Promise when invoked.
+
+@demo
 -->
-
 <dom-module id="ft-confirmation-dialog">
 
     <template>
@@ -77,16 +77,19 @@ A configurable confirmation dialog that returns a Promise when posed.
             ],
 
             properties: {
-                
+
+                /** A copy of the prompt string given in the _alert()_ or _confirm()_ method call. Bound to the display element.  */
                 _prompt: {
                     type: String
                 },
                 
+                /** A copy of the commit button label string given in the _alert()_ or _confirm()_ method call. Bound to the button element label.  */
                 _commitButtonLabel: {
                     type: String,
                     value: "Okay"
                 },
                 
+                /** A copy of the cancel button label string given in the _confirm()_ method call. Bound to the button element label.  */
                 _cancelButtonLabel: {
                     type: String,
                     value: "Cancel"
@@ -104,6 +107,13 @@ A configurable confirmation dialog that returns a Promise when posed.
                 return this.clientHeight - buttonsHeight;
             },
 
+            /**
+             * Display a modal alert dialog with the given prompt text. Does not block.
+             *
+             * @param {String} prompt The text to display in the dialog. Markdown is supported.
+             * @param {String} commitButtonLabel _optional_ The string to use for the button that dismisses the dialog.
+             * @return {Object} A promise that resolves to the string "commit" when the user dismisses the dialog.
+             */
             alert: function(prompt, commitButtonLabel)
             {
                 this.$.cancelButton.hidden = true;
@@ -117,6 +127,18 @@ A configurable confirmation dialog that returns a Promise when posed.
                 return this._pose(prompt, commitButtonLabel);
             },
 
+            /**
+             * Display a modal alert dialog with the given prompt text. Does not block.
+             *
+             * Emits a either a _commit_ or a _cancel_ event when the user dismisses the dialog, depending on which
+             * button they clicked.
+             *
+             * @param {String} prompt The text to display in the dialog. Markdown is supported.
+             * @param {String} commitButtonLabel _optional_ The string to use for the button that commits the dialog.
+             * @param {String} cancelButtonLabel _optional_ The string to use for the button that cancels the dialog.
+             * @return {Object} A promise that resolves to the string "commit" or a "cancel" event when the user
+             * dismisses the dialog, depending on which button they clicked.
+             */
             confirm: function(prompt, commitButtonLabel, cancelButtonLabel)
             {
                 this.$.cancelButton.hidden = false;

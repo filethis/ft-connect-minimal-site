@@ -20,9 +20,11 @@ limitations under the License.
     window.FileThis = window.FileThis || {};
 
     /**
-     * `ft-scrolling-behavior`
-     * A behavior that helps with scrolling of elements.
-     * @demo demo/index.html
+     * `<ft-scrolling-behavior>`
+     *
+     * This behavior works around two very vexing browser scrolling problems.
+     *
+     * @demo
      * @polymerBehavior FileThis.ScrollingBehavior
      */
     FileThis.ScrollingBehavior = {
@@ -33,6 +35,7 @@ limitations under the License.
 
         properties: {
 
+            /** Used internally to track which elements are managed by this behavior. */
             _managedScrollers: {
                 type: Array,
                 value: function() { return []; }

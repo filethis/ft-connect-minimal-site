@@ -22,12 +22,12 @@ limitations under the License.
 <link rel="import" href="../polymer/polymer.html">
 
 <!--
-`ft-create-connection-dialog`
+`<ft-create-connection-dialog>`
+
 An element that accepts username and password to connect to a document source.
 
-@demo demo/index.html
+@demo
 -->
-
 <dom-module id="ft-create-connection-dialog">
 
     <template>
@@ -260,10 +260,16 @@ An element that accepts username and password to connect to a document source.
                     notify: true
                 },
 
-                /** Show "Is this safe" button at bottom of dialog. */
+                /**
+                 * Show "Is this safe" button at bottom of dialog.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values.
+                 *
+                 * @type {boolean}
+                 */
                 showIsThisSafeButton:
                 {
-                    type: Boolean,
+                    type: Object,
                     value: true,
                     notify: true
                 },
@@ -276,18 +282,21 @@ An element that accepts username and password to connect to a document source.
                     notify: true
                 },
 
+                /** URL for source logo. Computed from the source resource property and bound to UI element. */
                 _sourceLogoUrl:
                 {
                     type: String,
                     computed: '_getSourceLogoUrl(source)'
                 },
 
+                /** Name of the source. Computed from the source resource property and bound to UI element. */
                 _sourceName:
                 {
                     type: String,
                     computed: '_getSourceName(source)'
                 },
 
+                /** Notes about the source, if any. Computed from the source resource property and bound to UI element. */
                 _sourceNotes:
                 {
                     type: String,

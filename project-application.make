@@ -69,22 +69,22 @@ run-browser-sync-test:  ## Run BrowserSync for tests
 
 .PHONY: open-app
 open-app:  ## Open URL of application published on GitHub Pages
-	@open https://filethis.github.io/${NAME};
+	@open https://filethis.github.io/${NAME}/;
 
 .PHONY: url-app
 url-app:  ## Print URL of application published on GitHub Pages
-	@echo https://filethis.github.io/${NAME};
+	@echo https://filethis.github.io/${NAME}/;
 
 
 # Docs -----------------------------------------------------------------------------------
 
 .PHONY: open-docs
 open-docs:  ## Open URL of application documentation published on GitHub Pages
-	@open https://filethis.github.io/${NAME};
+	@open https://filethis.github.io/${NAME}/;
 
 .PHONY: url-docs
 url-docs:  ## Print URL of application documentation published on GitHub Pages
-	@echo https://filethis.github.io/${NAME};
+	@echo https://filethis.github.io/${NAME}/;
 
 
 # Release -----------------------------------------------------------------------------------

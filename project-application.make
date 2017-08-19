@@ -49,15 +49,15 @@ clean-app-docs:  ## Clean application documentation page
 
 # Running -----------------------------------------------------------------------------------
 
-.PHONY: run-browser-sync
-run-browser-sync:  ## Run BrowserSync
+.PHONY: open
+open:  ## Run BrowserSync
 	@browser-sync start \
 		--config "bs-config.js" \
 		--server \
 		--port ${LOCAL_PORT};
 
-.PHONY: run-browser-sync-test
-run-browser-sync-test:  ## Run BrowserSync for tests
+.PHONY: open-test
+open-test:  ## Run BrowserSync for tests
 	@browser-sync start \
 		--config "bs-config.js" \
 		--server \
@@ -69,22 +69,22 @@ run-browser-sync-test:  ## Run BrowserSync for tests
 
 .PHONY: open-app
 open-app:  ## Open URL of application published on GitHub Pages
-	@open https://filethis.github.io/${NAME}/;
+	@open https://${GITHUB_USER}.github.io/${NAME}/;
 
 .PHONY: url-app
 url-app:  ## Print URL of application published on GitHub Pages
-	@echo https://filethis.github.io/${NAME}/;
+	@echo https://${GITHUB_USER}.github.io/${NAME}/;
 
 
 # Docs -----------------------------------------------------------------------------------
 
 .PHONY: open-docs
 open-docs:  ## Open URL of application documentation published on GitHub Pages
-	@open https://filethis.github.io/${NAME}/;
+	@open https://${GITHUB_USER}.github.io/${NAME}/;
 
 .PHONY: url-docs
 url-docs:  ## Print URL of application documentation published on GitHub Pages
-	@echo https://filethis.github.io/${NAME}/;
+	@echo https://${GITHUB_USER}.github.io/${NAME}/;
 
 
 # Release -----------------------------------------------------------------------------------
@@ -96,11 +96,11 @@ publish-github-pages: build-app
 	lib_dir=$$parent_dir/lib; \
 	rm -rf $$lib_dir/node_modules/gh-pages/.cache; \
 	gh-pages \
-		--repo https://github.com/filethis/${NAME}.git \
+		--repo https://github.com/${GITHUB_USER}/${NAME}.git \
 		--branch gh-pages \
 		--silent \
 		--dist ./build/default; \
-	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
+	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://${GITHUB_USER}.github.io/${NAME};
 
 #.PHONY: publish-github-pages
 #publish-github-pages: build-app # Internal target: Publish application docs on GitHub Pages. Usually invoked as part of a release via 'release' target.
@@ -109,11 +109,11 @@ publish-github-pages: build-app
 #	lib_dir=$$parent_dir/lib; \
 #	rm -rf $$lib_dir/node_modules/gh-pages/.cache; \
 #	gh-pages \
-#		--repo https://github.com/filethis/${NAME}.git \
+#		--repo https://github.com/${GITHUB_USER}/${NAME}.git \
 #		--branch gh-pages \
 #		--dist ./docs/ \
 #		--remove ./docs/README.md; \
-#	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
+#	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://${GITHUB_USER}.github.io/${NAME};
 
 .PHONY: bower-register
 bower-register:  # Internal target: Register element in public Bower registry. Usually invoked as part of a release via 'release' target.

@@ -73,7 +73,7 @@ This element displays a single FileThis connection resource, suitable for use in
             <div id="actionButtonAndRefreshDate" class="layout vertical center" hidden="[[_working]]" style="width:120px;">
 
                 <!-- Action button -->
-                <paper-button raised="" id="actionButton" style="width:100px; height:32px; background-color:white" on-tap="_onActionButtonClicked">
+                <paper-button raised="" id="actionButton" style="width:100px; height:32px; background-color:white" hidden="[[_actionButtonHidden]]" on-tap="_onActionButtonClicked">
                     <iron-icon id="icon"></iron-icon>
                     <div style="width:3px;"></div>
                     <iron-label id="buttonLabel" style="font-family:Arial; font-size:12px;"></iron-label>
@@ -133,8 +133,26 @@ This element displays a single FileThis connection resource, suitable for use in
                     observer: "_onSelectedChanged"
                 },
 
+                /**
+                 * Whether to allow users to trigger document fetching "manually" by clicking a button in the connection item, or not.
+                 *
+                 * Note that you can provide the strings "true" and "false" as attribute values.
+                 *
+                 * @type {boolean}
+                 */
+                allowManualFetch: {
+                    type: Object,
+                    value: true
+                },
+
                 /** True when the connection is in a "working" state. Makes an indeterminate progress indicator spin. */
                 _working: {
+                    type: Boolean,
+                    value: false
+                },
+
+                /** True when the the action button is hidden. */
+                _actionButtonHidden: {
                     type: Boolean,
                     value: false
                 }
@@ -143,7 +161,7 @@ This element displays a single FileThis connection resource, suitable for use in
 
             observers:
             [
-                "_onConnectionStateChanged(connection.state)"
+                "_onConnectionStateChanged(connection.state, allowManualFetch)"
             ],
 
             _onConnectionStateChanged: function(state)
@@ -151,43 +169,55 @@ This element displays a single FileThis connection resource, suitable for use in
                 if (this.connection === null)
                     return;
 
+                var showActionButton;
                 var label;
                 var icon;
                 var working;
                 switch (this.connection.state)
                 {
                     case "waiting":
+                        showActionButton = this.allowManualFetch;
                         label = "Refresh";
                         icon = "refresh";
                         working = false;
                         break;
                     case "created":
                     case "connecting":
+                        showActionButton = true;
                         label = "Connecting";
                         icon = "refresh";
                         working = true;
                         break;
                     case "uploading":
-                        label = "Retrieving";
+                        showActionButton = true;
+                        var documentCount = this.connection.documentCount;
+                        if (documentCount === 0)
+                            label = "Retrieving";
+                        else
+                            label = "Retrieved " + documentCount.toString();
                         icon = "refresh";
                         working = true;
                         break;
                     case "question":
+                        showActionButton = true;
                         label = "Fix It";
                         icon = "report-problem";
                         working = false;
                         break;
                     case "error":
+                        showActionButton = true;
                         label = "Fix It";
                         icon = "report-problem";
                         working = false;
                         break;
                     default:
+                        showActionButton = true;
                         label = "Refresh";
                         icon = "refresh";
                         working = false;
                         break;
                 }
+                this._actionButtonHidden = !showActionButton;
                 this.$.buttonLabel.innerHTML = label;
                 this.$.spinnerLabel.innerHTML = label;
                 this.$.icon.icon = icon;
@@ -221,8 +251,8 @@ This element displays a single FileThis connection resource, suitable for use in
                 var checkedDate = new Date(connection.checkedDate);
 
                 var checkedYear = checkedDate.getYear();
-                var year1970 = 117;
-                var hasNeverFetched = (checkedYear < year1970);
+                var year2001 = 101;
+                var hasNeverFetched = (checkedYear < year2001);
                 if (hasNeverFetched)
                     return "";
 

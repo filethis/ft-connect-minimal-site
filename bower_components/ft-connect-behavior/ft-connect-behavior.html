@@ -173,16 +173,16 @@ limitations under the License.
                 notify: true
             },
 
-            /** When set, fake local data is used. Note that many functions that operate on FileThis resouces will not work with this fake data. This is useful for rendering the UI in a quiescent state so that it "looks good". */
-            demo:
+            /** When set, fake local data is used. Note that many functions that operate on FileThis resources will not work with this fake data. This is useful for rendering the UI in a quiescent state so that it "looks good". */
+            fake:
             {
                 type: Object,
                 value: false,
                 notify: true
             },
 
-            /** The relative path where demo data can be found. Must have trailing slash. */
-            demoDataPath:
+            /** The relative path where fake data can be found. Must have trailing slash. */
+            fakeDataPath:
             {
                 type: String,
                 value: "../bower_components/ft-connect-behavior/demo/data/",
@@ -403,7 +403,7 @@ limitations under the License.
 
         _downloadDocument: function(document)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve();
 
             // NOTE: This is not an ideal way to download documents, but I could not get the standard method
@@ -436,7 +436,7 @@ limitations under the License.
 
         _downloadDocumentShouldWorkButDoesNot: function(document)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve();
 
             // TODO: Spent a lot of time trying to get this standard method for downloading files to work.
@@ -515,7 +515,7 @@ limitations under the License.
 
         _uploadFile: function(file)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve([]);
 
             // Create a FormData instance
@@ -614,7 +614,7 @@ limitations under the License.
 
         _startManualFetch: function(connection)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve();
 
             // TODO: Shouldn't we disable the fetch button to prevent double-clicking?
@@ -625,7 +625,7 @@ limitations under the License.
                 "/fetch";
             var options = this._buildHttpOptions();
 
-            return this.httpPost(url, options);
+            return this.httpPost(url, null, options);
         },
 
         _poseInteractionForConnection: function(connection)
@@ -693,7 +693,7 @@ limitations under the License.
 
         _getAccount: function()
         {
-            if (this.demo)
+            if (this.fake)
             {
                 return new Promise(function(fulfill)
                 {
@@ -716,10 +716,10 @@ limitations under the License.
 
         _getSources: function()
         {
-            if (this.demo)
+            if (this.fake)
             {
-                var demoDataUrl = this.demoDataPath + "fake-sources.json";
-                return this.httpGet(demoDataUrl)
+                var fakeDataUrl = this.fakeDataPath + "fake-sources.json";
+                return this.httpGet(fakeDataUrl)
                     .then(function(sources)
                     {
                         this.sources = sources;
@@ -744,10 +744,10 @@ limitations under the License.
 
         _getConnections: function()
         {
-            if (this.demo)
+            if (this.fake)
             {
-                var demoDataUrl = this.demoDataPath + "fake-connections.json";
-                return this.httpGet(demoDataUrl)
+                var fakeDataUrl = this.fakeDataPath + "fake-connections.json";
+                return this.httpGet(fakeDataUrl)
                     .then(function(connections)
                     {
                         this.connections = connections;
@@ -772,7 +772,7 @@ limitations under the License.
 
         _getConnection: function(connectionId)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve();  // Will not make the caller happy...
 
             var url = this.server + this.apiPath +
@@ -788,7 +788,7 @@ limitations under the License.
 
         _onDeleteConnection: function(connection)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve();
 
             var url = this.server + this.apiPath +
@@ -800,15 +800,15 @@ limitations under the License.
 
         _getDocuments: function()
         {
-            if (this.demo)
+            if (this.fake)
             {
-                var demoDataUrl = this.demoDataPath + "fake-documents.json";
-                return this.httpGet(demoDataUrl)
+                var fakeDataUrl = this.fakeDataPath + "fake-documents.json";
+                return this.httpGet(fakeDataUrl)
                     .then(function(documents)
                     {
                         // Tweak the image paths
                         documents.forEach(function(document) {
-                            var newThumbnailUrl = this.demoDataPath + document.thumbnailUrl;
+                            var newThumbnailUrl = this.fakeDataPath + document.thumbnailUrl;
                             document.thumbnailUrl = newThumbnailUrl;
                         }.bind(this));
 
@@ -831,7 +831,7 @@ limitations under the License.
 
         _getDocument: function(documentId)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve();  // Will not make the caller happy...
 
             var url = this.server + this.apiPath +
@@ -847,7 +847,7 @@ limitations under the License.
 
         _onDeleteDocument: function(document)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve();
 
             var url = this.server + this.apiPath +
@@ -867,14 +867,14 @@ limitations under the License.
         {
             this._interactionRequests = [];
 
-            if (this.demo)
+            if (this.fake)
             {
                 var version = this.interactionVersion;
                 var url;
                 if (version === "2.0.0")
-                    url = this.demoDataPath + "fake-interaction-requests-2_0_0.json";
+                    url = this.fakeDataPath + "fake-interaction-requests-2_0_0.json";
                 else if (version === "1.0.0")
-                    url = this.demoDataPath + "fake-interaction-requests-1_0_0.json";
+                    url = this.fakeDataPath + "fake-interaction-requests-1_0_0.json";
                 else
                     throw new Error("Unrecognized user interaction schema version: " + version);
 
@@ -900,7 +900,7 @@ limitations under the License.
 
         _getInteractionRequest: function(connectionId, interactionId)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve();  // Will not make the caller happy...
 
             var url = this.server + this.apiPath +
@@ -920,7 +920,7 @@ limitations under the License.
 
         _getConnectionInteractionRequests: function(connectionId)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve([]);
 
             var url = this.server + this.apiPath +
@@ -969,7 +969,7 @@ limitations under the License.
 
         _createConnection: function(username, password, source)
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve();
 
             var sourceId = source.id;
@@ -1114,7 +1114,7 @@ limitations under the License.
 
         _getAllChangeNotifications: function()
         {
-            if (this.demo)
+            if (this.fake)
                 return Promise.resolve([]);
 
             var url = this.server + this.apiPath + "/changes";
@@ -1663,10 +1663,13 @@ limitations under the License.
 
         _prependFakeSource: function(sources)
         {
-            var fakeSource =
+            var fakeSource;
+
+            // The fake external source
+            fakeSource =
             {
                 "id": 100100,
-                "name": "Test Site",
+                "name": "Fake External",
                 "type": "util",
                 "state": "live",
                 "homePageUrl": "https://fake-company-site.herokuapp.com",
@@ -1680,8 +1683,47 @@ limitations under the License.
                 "isNew": false,
                 "isPopular": false
             };
-
             sources.unshift(fakeSource);
+
+            // The fake internal source
+            fakeSource =
+            {
+                "id": 100301,
+                "name": "Fake Internal Bills",
+                "type": "util",
+                "state": "live",
+                "homePageUrl": "https://fake-company-site.herokuapp.com",
+                "phone": "(800) 555-5555",
+                "logoPath": "logos/Logo_FakeBank.png",
+                "logo": "Logo_FakeBank.png",
+                "logoUrl": "https://filethis.com/static/logos/72/Logo_FakeBank.png",
+                "note": "",
+                "info": "",
+                "pattern": "",
+                "isNew": false,
+                "isPopular": false
+            };
+            sources.unshift(fakeSource);
+
+            // The fake internal source
+//            fakeSource =
+//            {
+//                "id": 100304,
+//                "name": "Fake Internal Creds",
+//                "type": "util",
+//                "state": "live",
+//                "homePageUrl": "https://fake-company-site.herokuapp.com",
+//                "phone": "(800) 555-5555",
+//                "logoPath": "logos/Logo_FakeBank.png",
+//                "logo": "Logo_FakeBank.png",
+//                "logoUrl": "https://filethis.com/static/logos/72/Logo_FakeBank.png",
+//                "note": "",
+//                "info": "",
+//                "pattern": "",
+//                "isNew": false,
+//                "isPopular": false
+//            };
+//            sources.unshift(fakeSource);
         },
 
         _handleError: function(error)

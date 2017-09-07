@@ -148,6 +148,29 @@ as you would a regular DOM element:
         value: false
       },
       /**
+       * Function used to customize a sanitize behavior.
+       * It takes one argument: element String without text Contents.
+       *
+       * e.g. `<div>` `<a href="/">` `</p>'.
+       * Note: To enable this function, must set `sanitize` to true.
+       * WARNING: If you are using this option to untrusted text, you must to prevent XSS Attacks.
+       */
+      sanitizer: {
+        type: Function,
+        value: null
+      },
+      /**
+       * If true, disables the default sanitization of any markdown received by
+       * a request and allows fetched unsanitized markdown
+       *
+       * e.g. fetching markdown via `src` that has HTML.
+       * Note: this value overrides `sanitize` if a request is made.
+       */
+      disableRemoteSanitization: {
+        type: Boolean,
+        value: false
+      },
+      /**
        * Use "smart" typographic punctuation for things like quotes and dashes.
        */
       smartypants: {
@@ -176,7 +199,7 @@ as you would a regular DOM element:
     },
 
     observers: [
-      'render(markdown, breaks, pedantic, renderer, sanitize, smartypants, callback)'
+      'render(markdown, breaks, pedantic, renderer, sanitize, sanitizer, smartypants, callback)'
     ],
 
     ready: function() {
@@ -276,6 +299,7 @@ as you would a regular DOM element:
         highlight: this._highlight.bind(this),
         breaks: this.breaks,
         sanitize: this.sanitize,
+        sanitizer: this.sanitizer,
         pedantic: this.pedantic,
         smartypants: this.smartypants
       };
@@ -322,7 +346,7 @@ as you would a regular DOM element:
         // Note: if we are using the file:// protocol, the status code will be 0
         // for all outcomes (successful or otherwise).
         if (status === 0 || (status >= 200 && status < 300)) {
-          this.sanitize = true;
+          this.sanitize = !this.disableRemoteSanitization;
           this.markdown = e.target.response;
         } else {
           this._handleError(e);

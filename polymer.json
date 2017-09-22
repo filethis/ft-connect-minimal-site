@@ -1,9 +1,5 @@
 {
     "entrypoint": "index.html",
-    "lint": {
-        "rules": ["polymer-2-hybrid"],
-        "ignoreWarnings": ["multiple-doc-comments"]
-    },
     "shell": "index.html",
     "fragments": [
     ],
@@ -15,5 +11,18 @@
     "extraDependencies": [
         "manifest.json",
         "bower_components/webcomponentsjs/webcomponents-lite.js"
+    ],
+    "lint": {
+        "rules": [
+            "polymer-2-hybrid"
+        ],
+        "ignoreWarnings": [
+            "multiple-doc-comments"
+        ]
+    },
+    "builds": [
+        {
+            "preset": "es5-bundled"
+        }
     ]
 }

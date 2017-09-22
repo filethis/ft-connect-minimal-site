@@ -17,30 +17,33 @@ limitations under the License.
 
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>ft-connect-minimal-site</title>
-    <meta name="description" content="ft-connect-minimal-site description">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <!-- See https://goo.gl/OOhYW5 -->
-    <link rel="manifest" href="manifest.json">
+        <title>ft-connect-minimal-site</title>
+        <meta name="description" content="ft-connect-minimal-site description">
 
-    <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+        <!-- See https://goo.gl/OOhYW5 -->
+        <link rel="manifest" href="manifest.json">
 
-    <link rel="import" href="./src/ft-connect-minimal-site.html">
-</head>
+        <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
-<style>
-    body {
-        background-color: #FAFAFA;
-    }
-</style>
+        <link rel="import" href="./src/ft-connect-minimal-site.html">
 
-<body>
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+        </style>
+    </head>
 
-<ft-connect-minimal-site></ft-connect-minimal-site>
+    <body>
+        <ft-connect-minimal-site
+                style="height:100%; ">
+        </ft-connect-minimal-site>
+    </body>
 
-</body>
 </html>

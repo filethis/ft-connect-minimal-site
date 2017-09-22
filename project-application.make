@@ -42,6 +42,18 @@ build-app:  ## Build application
 clean-app:  ## Clean application
 	@rm -rf ./build/;
 
+
+.PHONY: build-dist
+build-dist: clean-dist build-app  ## Build distribution
+	@mkdir -p ./dist; \
+	pushd ./build; \
+	zip -r ../dist/es5-bundled.zip ./es5-bundled
+
+.PHONY: clean-dist
+clean-dist:  ## Clean distribution
+	@rm -rf ./dist/;
+
+
 .PHONY: clean-app-docs
 clean-app-docs:  ## Clean application documentation page
 	@rm -f ./docs/index.html;
@@ -90,7 +102,7 @@ url-docs:  ## Print URL of application documentation published on GitHub Pages
 # Release -----------------------------------------------------------------------------------
 
 .PHONY: publish-github-pages
-publish-github-pages: build-app
+publish-github-pages: build-dist
 	@bin_dir="$$(dirname `which gh-pages`)"; \
 	parent_dir="$$(dirname $$bin_dir)"; \
 	lib_dir=$$parent_dir/lib; \
@@ -103,7 +115,7 @@ publish-github-pages: build-app
 	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://${GITHUB_USER}.github.io/${NAME};
 
 #.PHONY: publish-github-pages
-#publish-github-pages: build-app # Internal target: Publish application docs on GitHub Pages. Usually invoked as part of a release via 'release' target.
+#publish-github-pages: build-dist # Internal target: Publish application docs on GitHub Pages. Usually invoked as part of a release via 'release' target.
 #	@bin_dir="$$(dirname `which gh-pages`)"; \
 #	parent_dir="$$(dirname $$bin_dir)"; \
 #	lib_dir=$$parent_dir/lib; \

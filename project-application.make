@@ -111,7 +111,7 @@ publish-github-pages: build-dist
 		--repo https://github.com/${GITHUB_USER}/${NAME}.git \
 		--branch gh-pages \
 		--silent \
-		--dist ./build/default; \
+		--dist ./build/es5-bundled; \
 	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://${GITHUB_USER}.github.io/${NAME};
 
 #.PHONY: publish-github-pages

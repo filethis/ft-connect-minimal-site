@@ -62,7 +62,21 @@ clean-app-docs:  ## Clean application documentation page
 # Running -----------------------------------------------------------------------------------
 
 .PHONY: open
-open:  ## Run BrowserSync
+open:  ## Run BrowserSync against an already-running local server
+	@if lsof -i tcp:${LOCAL_PORT} > /dev/null; then \
+		echo Found running Polymer server; \
+	else \
+		echo No Polymer server running for element demo. Use \"make serve\"; \
+		exit 1; \
+	fi; \
+	browser-sync start \
+		--config "bs-config.js" \
+		--proxy "http://localhost:${LOCAL_PORT}/${QUERY_STRING}" \
+		--port ${LOCAL_PORT} \
+		--startPath "/";
+
+.PHONY: open-direct
+open-direct:  ## Run BrowserSync to serve local files
 	@browser-sync start \
 		--config "bs-config.js" \
 		--server \
@@ -70,11 +84,18 @@ open:  ## Run BrowserSync
 
 .PHONY: open-test
 open-test:  ## Run BrowserSync for tests
-	@browser-sync start \
+	@if lsof -i tcp:${LOCAL_PORT} > /dev/null; then \
+		echo Found running Polymer server; \
+	else \
+		echo No Polymer server running for element demo. Use \"make serve\"; \
+		exit 1; \
+	fi; \
+	browser-sync start \
 		--config "bs-config.js" \
-		--server \
+		--proxy "http://localhost:${LOCAL_PORT}" \
 		--port ${LOCAL_PORT} \
-		--index "/test/${NAME}/${NAME}_test.html";
+		--startPath "/components/${NAME}/test/" \
+		--index "${NAME}_test.html";
 
 
 # Application -----------------------------------------------------------------------------------

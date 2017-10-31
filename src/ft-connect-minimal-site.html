@@ -15,21 +15,27 @@ limitations under the License.
 -->
 
 
-<link rel="import" href="../bower_components/ft-connect-tabbed/ft-connect-tabbed.html">
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="https://rawgit.com/filethis/ft-connect-wizard-cdn/v0.0.5/bower_components/ft-connect-wizard/ft-connect-wizard.html">
 
 <dom-module id="ft-connect-minimal-site">
 
     <template>
 
-        <ft-connect-tabbed
-                live="true"
-                debug="true"
-                user-account-id="XXXXXX"
-                token="XXXXXX"
-                on-ft-connect-error="_onFileThisConnectError"
-                style="width:780px; height:450px; ">
-        </ft-connect-tabbed>
+        <style include="iron-flex iron-flex-alignment iron-positioning"></style>
+
+        <style>
+            :host {
+                display:block;
+                overflow:hidden;
+                @apply --layout-horizontal;
+            }
+        </style>
+
+        <ft-connect-wizard
+            class="flex"
+            user-account-id="XXXXX"
+            token="XXXXX">
+        </ft-connect-wizard>
 
     </template>
 

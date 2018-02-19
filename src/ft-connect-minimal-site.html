@@ -15,7 +15,11 @@ limitations under the License.
 -->
 
 
-<link rel="import" href="https://rawgit.com/filethis/ft-connect-wizard-cdn/v0.0.5/bower_components/ft-connect-wizard/ft-connect-wizard.html">
+<link rel="import" href="../bower_components/ft-connect-wizard/ft-connect-wizard.html">
+<link rel="import" href="../bower_components/ft-connection-panel/ft-connection-panel-settings.html">
+<link rel="import" href="../bower_components/ft-connection-list-item/ft-connection-list-item-settings.html">
+<link rel="import" href="../bower_components/ft-source-panel/ft-source-panel-settings.html">
+<link rel="import" href="../bower_components/ft-document-panel/ft-document-panel-settings.html">
 
 <dom-module id="ft-connect-minimal-site">
 
@@ -33,9 +37,14 @@ limitations under the License.
 
         <ft-connect-wizard
             class="flex"
-            user-account-id="XXXXX"
-            token="XXXXX">
+            user-account-id="166170"
+            token="lBvJlvXAju59pweY8BjvRLnzIGvRqE9llYkusk6YnDtW">
         </ft-connect-wizard>
+
+        <ft-source-panel-settings
+            show-filters=false
+        >
+        </ft-source-panel-settings>
 
     </template>
 

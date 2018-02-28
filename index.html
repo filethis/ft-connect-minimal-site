@@ -25,14 +25,8 @@ limitations under the License.
         <title>ft-connect-minimal-site</title>
         <meta name="description" content="ft-connect-minimal-site description">
 
-        <!-- See https://goo.gl/OOhYW5 -->
-        <link rel="manifest" href="./manifest.json">
-
-        <!-- Load the Web Components runtime support -->
-        <script src="https://rawgit.com/filethis/ft-connect-wizard-cdn/v0.0.5/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-
-        <!-- Load the FileThisConnect minimal website component -->
-        <link rel="import" href="./src/ft-connect-minimal-site.html">
+        <!-- Load any needed polyfills for Web Components -->
+        <script src="https://connect.filethis.com/webcomponents/webcomponentsjs/v1.0.0/webcomponents-loader.js"></script>
 
         <style>
             html, body {
@@ -43,9 +37,109 @@ limitations under the License.
     </head>
 
     <body>
-        <ft-connect-minimal-site
-                style="height:100%; ">
-        </ft-connect-minimal-site>
+
+        <!-- Import the FileThis drop-in "wizard" web component -->
+        <link rel="import" href="https://connect.filethis.com/ft-connect-wizard/v0.0.11/dropin/ft-connect-wizard.html">
+
+        <!-- Styling and layout for the fixture  -->
+        <style>
+            .common {
+                display:flex;
+                box-sizing: border-box;
+                font-family:Arial;
+                font-size:12pt;
+            }
+            .main {
+                flex-direction:column;
+                height:100%;
+                border-bottom:1px solid black;
+            }
+            .header {
+                flex-direction:column;
+                padding:10px;
+                border-bottom:1px solid black;
+            }
+            .fields {
+                flex-direction:row;
+            }
+            .instance {
+                flex:1;
+            }
+        </style>
+
+        <!-- A parent for the fixture panel and the wizard instance -->
+        <div class="common main">
+
+            <!-- Fixture panel -->
+            <div class="common header">
+
+                <!-- Instructions -->
+                <div style="margin-bottom:15px;">This is the "ft-connect-minimal-site" website. It demonstrates how to embed an instance of the the  "ft-connect-wizard" drop-in web component element into a simple website</div>
+                <div style="margin-bottom:15px;">Use the FileThis Front-End tool to create a user account and a temporary user access token using your API key and secret, and then paste the account id and token string into the fields below. Click the "Inject" button to inject these into the component instance. Then play.</div>
+
+                <!--<div style="margin-bottom:15px;">In a real app, your backend...</div>-->
+
+                <!-- xxx -->
+                <div class="common fields">
+
+                    <!-- User account id field -->
+                    <div>User Account ID:</div>
+                    <input id="userAccountIdField" type="text" style="width:100px">
+
+                    <!-- User access token field -->
+                    <div style="display:inline; margin-left:20px;">User Access Token:</div>
+                    <input id="userAccessTokenField" type="password" style="width:200px">
+
+                    <!-- Inject button -->
+                    <button
+                        type="button"
+                        style="margin-left:20px;"
+                        onclick="_onInjectButtonClicked()">
+                        Inject
+                    </button>
+
+                    <!-- Source button -->
+                    <button
+                        type="button"
+                        style="margin-left:20px;"
+                        onclick="window.open('https://github.com/filethis/ft-connect-minimal-site/blob/master/index.html'); return false;">
+                        Source
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- Instance of the "wizard" web component element -->
+            <ft-connect-wizard
+                class="common instance"
+                live="false"
+                debug="false"
+                fake-sources="true"
+                on-ft-connect-error="function(event) alert(event.detail)">
+            </ft-connect-wizard>
+
+        </div>
+
+        <script>
+
+            function _onInjectButtonClicked()
+            {
+                // Get entered values
+                var userAccountId = document.getElementById("userAccountIdField").value;
+                var userAccessToken = document.getElementById("userAccessTokenField").value;
+
+                // Inject values into the wizard instance
+                var wizard = document.querySelector('ft-connect-wizard');
+                wizard.userAccountId = userAccountId;
+                wizard.token = userAccessToken;
+
+                // Turn on the wizard
+                wizard.live = "true";
+            }
+
+        </script>
+
     </body>
 
 </html>

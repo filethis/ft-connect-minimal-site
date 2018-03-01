@@ -39,103 +39,246 @@ limitations under the License.
     <body>
 
         <!-- Import the FileThis drop-in "wizard" web component -->
-        <link rel="import" href="https://connect.filethis.com/ft-connect-wizard/v0.0.11/dropin/ft-connect-wizard.html">
+        <link rel="import" href="https://connect.filethis.com/ft-connect-wizard/v0.0.12/dropin/ft-connect-wizard.html">
 
-        <!-- Styling and layout for the fixture  -->
+        <!-- Styling and layout for the fixture panel -->
         <style>
-            .common {
-                display:flex;
-                box-sizing: border-box;
-                font-family:Arial;
-                font-size:12pt;
-            }
             .main {
-                flex-direction:column;
                 height:100%;
+                box-sizing: border-box;
                 border-bottom:1px solid black;
             }
-            .header {
-                flex-direction:column;
-                padding:10px;
+            .fixture {
+                height:60px;
                 border-bottom:1px solid black;
+                padding-left:20px;
+                padding-right:20px;
             }
-            .fields {
-                flex-direction:row;
+            .title {
+                font-family:Arial;
+                font-size:16pt;
             }
-            .instance {
+            .divider {
+                width:25px; height:70%;
+                border-left:1px solid #EEE;
+                margin-left:20px;
+            }
+            .instructions {
+                margin-bottom:15px;
+                font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+            }
+            .field-label {
+                margin-left:15px;
+                font-family:Arial;
+            }
+            .field-entry {
+                margin-left:5px;
+                font-family:Arial;
+            }
+            .hidden {
+                visibility:hidden;
+            }
+            .shown {
+                visibility:visible;
                 flex:1;
+            }
+
+            /*FlexBox*/
+            .layout.horizontal,
+            .layout.vertical {
+              display: -ms-flexbox;
+              display: -webkit-flex;
+              display: flex;
+            }
+            .layout.horizontal {
+              -ms-flex-direction: row;
+              -webkit-flex-direction: row;
+              flex-direction: row;
+            }
+            .layout.vertical {
+              -ms-flex-direction: column;
+              -webkit-flex-direction: column;
+              flex-direction: column;
+            }
+            .layout.center {
+              -ms-flex-align: center;
+              -webkit-align-items: center;
+              align-items: center;
+            }
+            .flex {
+                -ms-flex: 1 1 0.000000001px;
+                -webkit-flex: 1;
+                flex: 1;
+                -webkit-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
             }
         </style>
 
-        <!-- A parent for the fixture panel and the wizard instance -->
-        <div class="common main">
+        <!-- Fixture panel above the "wizard" web component -->
+        <div class="main layout vertical">
 
             <!-- Fixture panel -->
-            <div class="common header">
+            <div class="fixture layout horizontal center">
 
-                <!-- Instructions -->
-                <div style="margin-bottom:15px;">This is the "ft-connect-minimal-site" website. It demonstrates how to embed an instance of the the  "ft-connect-wizard" drop-in web component element into a simple website</div>
-                <div style="margin-bottom:15px;">Use the FileThis Front-End tool to create a user account and a temporary user access token using your API key and secret, and then paste the account id and token string into the fields below. Click the "Inject" button to inject these into the component instance. Then play.</div>
-
-                <!--<div style="margin-bottom:15px;">In a real app, your backend...</div>-->
-
-                <!-- xxx -->
-                <div class="common fields">
-
-                    <!-- User account id field -->
-                    <div>User Account ID:</div>
-                    <input id="userAccountIdField" type="text" style="width:100px">
-
-                    <!-- User access token field -->
-                    <div style="display:inline; margin-left:20px;">User Access Token:</div>
-                    <input id="userAccessTokenField" type="password" style="width:200px">
-
-                    <!-- Inject button -->
-                    <button
-                        type="button"
-                        style="margin-left:20px;"
-                        onclick="_onInjectButtonClicked()">
-                        Inject
-                    </button>
-
-                    <!-- Source button -->
-                    <button
-                        type="button"
-                        style="margin-left:20px;"
-                        onclick="window.open('https://github.com/filethis/ft-connect-minimal-site/blob/master/index.html'); return false;">
-                        Source
-                    </button>
-
+                <!-- Title -->
+                <div class="title">
+                    FileThisConnect Minimal Site
                 </div>
+
+                <!-- Divider -->
+                <div class="divider"></div>
+
+                <!-- FileThis User account id field -->
+                <div class="field-label">User Account ID:</div>
+                <input id="userAccountIdField" type="text" class="field-entry">
+
+                <!-- FileThis User access token field -->
+                <div class="field-label">User Access Token:</div>
+                <input id="userAccessTokenField" type="password" class="field-entry">
+
+                <!-- Spacer -->
+                <div class="flex"></div>
+
+                <!-- Power button -->
+                <button
+                        id="powerButton"
+                        type="button"
+                        style="margin-left:20px;"
+                        onclick="onPowerButtonClicked()">
+                    Turn On
+                </button>
 
             </div>
 
             <!-- Instance of the "wizard" web component element -->
             <ft-connect-wizard
-                class="common instance"
-                live="false"
-                debug="false"
-                fake-sources="true"
-                on-ft-connect-error="function(event) alert(event.detail)">
+                    id="wizard"
+                    class="hidden"
+                    live="false"
+                    user-account-id="XXXXX"
+                    token="XXXXX"
+                    debug="false"
+                    fake-sources="true">
             </ft-connect-wizard>
+
+            <!-- Offline panel -->
+            <div id="offline" class="shown">
+
+                <!-- Instructions -->
+                <div class="instructions">
+                    This is the "ft-connect-minimal-site" website.
+                    It demonstrates how to embed an instance of the the "ft-connect-wizard" drop-in
+                    web component element into a simple website
+                </div>
+                <div class="instructions">
+                    Use the FileThis Front-End tool to create a user account and a temporary user access token using
+                    your API key and secret, and then paste the account id and token string into the fields below.
+                    Click the "Inject" button to inject these into the component instance. Then play.
+                </div>
+                <div style="margin-bottom:15px;">In a real app, your backend...</div>
+
+                <!-- Show source button -->
+                <button
+                        type="button"
+                        style="margin-left:20px;"
+                        onclick="window.open('https://github.com/filethis/ft-connect-minimal-site/blob/master/index.html'); return false;">
+                    Show Source
+                </button>
+            </div>
 
         </div>
 
         <script>
 
-            function _onInjectButtonClicked()
+            function onPowerButtonClicked()
             {
+                if (isOn())
+                    turnOff();
+                else // is off
+                    turnOn();
+            }
+
+            function turnOn()
+            {
+                var wizard = document.getElementById("wizard");
+                var offline = document.getElementById("offline");
+
+                // Add error handler
+                wizard.addEventListener('ft-connect-error', onWizardError);
+
                 // Get entered values
                 var userAccountId = document.getElementById("userAccountIdField").value;
                 var userAccessToken = document.getElementById("userAccessTokenField").value;
 
-                // Inject values into the wizard instance
-                var wizard = document.querySelector('ft-connect-wizard');
+                // Validate the values
+                if (!parseInt(userAccountId))
+                {
+                    alert("Please enter a valid FileThis user account ID.");
+                    return;
+                }
+                if (userAccessToken.length === 0)
+                {
+                    alert("Please enter a valid, unexpired FileThis user access token.");
+                    return;
+                }
+
+                // Show the wizard
+                show(wizard);
+                hide(offline);
+
+                // Inject values into the wizard and turn it on
                 wizard.userAccountId = userAccountId;
                 wizard.token = userAccessToken;
+                wizard.live = true;
 
-                // Turn on the wizard
-                wizard.live = "true";
+                // Toggle the power button label
+                var powerButton = document.getElementById("powerButton");
+                powerButton.innerText = "Turn Off";
+            }
+
+            function turnOff()
+            {
+                var wizard = document.getElementById("wizard");
+                var offline = document.getElementById("offline");
+
+                // Remove error handler
+                wizard.removeEventListener('ft-connect-error', onWizardError);
+
+                // Hide the wizard
+                hide(wizard);
+                show(offline);
+
+                // Turn off the wizard
+                wizard.live = false;
+
+                // Toggle the power button label
+                var powerButton = document.getElementById("powerButton");
+                powerButton.innerText = "Turn On";
+            }
+
+            function isOn()
+            {
+                var powerButton = document.getElementById("powerButton");
+                return (powerButton.innerText === "Turn Off");
+            }
+
+            function show(element)
+            {
+                element.classList.remove("hidden");
+                element.classList.add("shown");
+            }
+
+            function hide(element)
+            {
+                element.classList.remove("shown");
+                element.classList.add("hidden");
+            }
+
+            function onWizardError(event)
+            {
+                turnOff();
+
+                alert(event.detail);
             }
 
         </script>

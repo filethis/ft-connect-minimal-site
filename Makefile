@@ -18,7 +18,7 @@ SHELL := /bin/bash
 
 # Project configuration
 NAME=ft-connect-minimal-site
-VERSION=0.0.20
+VERSION=0.0.22
 LOCAL_PORT=3505
 
 
@@ -51,6 +51,12 @@ serve-node:  ## Serve the site using Node "static-server" tool
 serve-php:  ## Serve the site using Node "static-server" tool
 	@php -S 127.0.0.1:${LOCAL_PORT};
 
+
+# Release -----------------------------------------------------------------------------------
+
+.PHONY: release-app
+release-app:  # Internal: Release distribution
+	@aws s3 sync . s3://connect.filethis.com/${NAME}/v${VERSION}/app/ --exclude "*" --include "index.html";
 
 
 # Help -----------------------------------------------------------------------------------

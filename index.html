@@ -25,85 +25,119 @@ limitations under the License.
         <title>ft-connect-minimal-site</title>
         <meta name="description" content="ft-connect-minimal-site description">
 
-        <!-- Load any needed polyfills for Web Components -->
-        <script src="https://connect.filethis.com/webcomponents/webcomponentsjs/v1.0.0/webcomponents-loader.js"></script>
+        <!-- Load any polyfills needed by the browser to support Web Components -->
+        <script src="https://connect.filethis.com/webcomponents/webcomponentsjs/1.0.0/webcomponents-loader.js"></script>
 
         <style>
+
+            /* Global */
             html, body {
                 height: 100%;
                 margin: 0;
-            }
-        </style>
-    </head>
-
-    <body>
-
-        <!-- Import the FileThis drop-in "wizard" web component -->
-        <link rel="import" href="https://connect.filethis.com/ft-connect-wizard/v0.0.12/dropin/ft-connect-wizard.html">
-
-        <!-- Styling and layout for the fixture panel -->
-        <style>
-            .main {
-                height:100%;
                 box-sizing: border-box;
-                border-bottom:1px solid black;
+                overflow:hidden;
+            }
+            *, *:before, *:after {
+                box-sizing: inherit;
+                overflow: inherit;
+            }
+
+            /* Local */
+            .main {
+                height: 100%;
+                border-bottom: 1px solid black;
             }
             .fixture {
-                height:60px;
-                border-bottom:1px solid black;
-                padding-left:20px;
-                padding-right:20px;
+                height: 60px;
+                border-bottom: 2px solid #DDD;
+                padding-left: 20px;
+                padding-right: 20px;
             }
             .title {
-                font-family:Arial;
-                font-size:16pt;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 16pt;
             }
             .divider {
-                width:25px; height:70%;
-                border-left:1px solid #EEE;
-                margin-left:20px;
-            }
-            .instructions {
-                margin-bottom:15px;
-                font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+                width: 25px; height: 70%;
+                border-left: 1px solid #EEE;
+                margin-left: 20px;
             }
             .field-label {
-                margin-left:15px;
-                font-family:Arial;
+                width: 125px;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 14px;
             }
             .field-entry {
-                margin-left:5px;
-                font-family:Arial;
+                margin-left: 5px;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .content {
+                padding: 20px;
+            }
+            .placeholder {
+                box-shadow: 8px 8px 8px #CCC;
+                width: 800px;
+                height: 500px;
+                border: 2px dashed black;
+                padding: 10px 15px 10px 15px;
+            }
+            .wizard {
+                box-shadow: 8px 8px 8px #CCC;
+                width: 800px;
+                height: 500px;
+                border: 1px solid black;
+            }
+            .placeholder-title {
+                color: #A9A9A9;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .instructions {
+                margin-top: 15px;
+                font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+            }
+            .button {
+                margin-left: 18px;
             }
             .hidden {
-                visibility:hidden;
-            }
-            .shown {
-                visibility:visible;
-                flex:1;
+                display: none !important;
             }
 
-            /*FlexBox*/
+            /* Example of custom style mixin applied to FileThis sub-component */
+            html {
+                --ft-source-panel-heading:
+                {
+                    font-size:14pt;
+                };
+            }
+
+            /* FlexBox */
             .layout.horizontal,
             .layout.vertical {
-              display: -ms-flexbox;
-              display: -webkit-flex;
-              display: flex;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
             }
             .layout.horizontal {
-              -ms-flex-direction: row;
-              -webkit-flex-direction: row;
-              flex-direction: row;
+                -ms-flex-direction: row;
+                -webkit-flex-direction: row;
+                flex-direction: row;
             }
             .layout.vertical {
-              -ms-flex-direction: column;
-              -webkit-flex-direction: column;
-              flex-direction: column;
+                -ms-flex-direction: column;
+                -webkit-flex-direction: column;
+                flex-direction: column;
             }
-            .layout.center {
-              -ms-flex-align: center;
-              -webkit-align-items: center;
-              align-items: center;
+            .layout.center,
+            .layout.center-center {
+                -ms-flex-align: center;
+                -webkit-align-items: center;
+                align-items: center;
+            }
+            .layout.center-justified,
+            .layout.center-center {
+                -ms-flex-pack: center;
+                -webkit-justify-content: center;
+                justify-content: center;
             }
             .flex {
                 -ms-flex: 1 1 0.000000001px;
@@ -114,7 +148,14 @@ limitations under the License.
             }
         </style>
 
-        <!-- Fixture panel above the "wizard" web component -->
+    </head>
+
+    <body>
+
+        <!-- Import the FileThis drop-in "wizard" web component -->
+        <link rel="import" href="https://connect.filethis.com/ft-connect-wizard/latest/dropin/ft-connect-wizard.html">
+
+        <!-- Main panel with the fixture panel above the FileThis web component element -->
         <div class="main layout vertical">
 
             <!-- Fixture panel -->
@@ -125,16 +166,36 @@ limitations under the License.
                     FileThisConnect Minimal Site
                 </div>
 
+                <!-- Guide button -->
+                <button
+                        id="guideButton"
+                        class="button hidden"
+                        type="button"
+                        onclick="window.open('https://filethis.com/developer/front-end/ft-connect-minimal-site/'); return false;">
+                    Guide
+                </button>
+
                 <!-- Divider -->
                 <div class="divider"></div>
 
-                <!-- FileThis User account id field -->
-                <div class="field-label">User Account ID:</div>
-                <input id="userAccountIdField" type="text" class="field-entry">
+                <!-- Entry fields -->
+                <div class="layout vertical">
 
-                <!-- FileThis User access token field -->
-                <div class="field-label">User Access Token:</div>
-                <input id="userAccessTokenField" type="password" class="field-entry">
+                    <!-- FileThis User account id field -->
+                    <div class="layout horizontal">
+                        <div class="field-label">User Account ID:</div>
+                        <input id="userAccountIdField" type="text" class="field-entry">
+                    </div>
+
+                    <!-- Spacer -->
+                    <div style="height:6px;"></div>
+
+                    <!-- FileThis User access token field -->
+                    <div class="layout horizontal">
+                        <div class="field-label">User Access Token:</div>
+                        <input id="userAccessTokenField" type="password" class="field-entry">
+                    </div>
+                </div>
 
                 <!-- Spacer -->
                 <div class="flex"></div>
@@ -142,50 +203,56 @@ limitations under the License.
                 <!-- Power button -->
                 <button
                         id="powerButton"
+                        class="button"
                         type="button"
-                        style="margin-left:20px;"
                         onclick="onPowerButtonClicked()">
                     Turn On
                 </button>
-
             </div>
 
-            <!-- Instance of the "wizard" web component element -->
-            <ft-connect-wizard
-                    id="wizard"
-                    class="hidden"
-                    live="false"
-                    user-account-id="XXXXX"
-                    token="XXXXX"
-                    debug="false"
-                    fake-sources="true">
-            </ft-connect-wizard>
+            <!-- Center the wizard or placeholder elements in the content area -->
+            <div class="content flex layout vertical center-center">
 
-            <!-- Offline panel -->
-            <div id="offline" class="shown">
+                <!-- Instance of the FileThis "wizard" web component element -->
+                <ft-connect-wizard
+                        id="wizard"
+                        class="wizard hidden"
+                        live="false"
+                        user-account-id="XXXXX"
+                        token="XXXXX"
+                        debug="false"
+                        fake-sources="true">
+                </ft-connect-wizard>
 
-                <!-- Instructions -->
-                <div class="instructions">
-                    This is the "ft-connect-minimal-site" website.
-                    It demonstrates how to embed an instance of the the "ft-connect-wizard" drop-in
-                    web component element into a simple website
+                <!-- Placeholder with a dotted-outline that shows where the wizard element will go and contains some instructions -->
+                <div
+                        id="placeholder"
+                        class="placeholder layout vertical center">
+
+                    <!-- Title -->
+                    <div class="placeholder-title">FileThis Web Component Element</div>
+
+                    <!-- Instructions -->
+                    <div class="instructions">
+                        This is the "ft-connect-minimal-site" website.
+                        It demonstrates how to embed an instance of the the "ft-connect-wizard" drop-in
+                        web component element into a simple website
+                    </div>
+                    <div class="instructions">
+                        Use the FileThis Front-End tool to create a user account and a temporary user access token using
+                        your API key and secret, and then paste the account id and token string into the fields below.
+                        Click the "Inject" button to inject these into the component instance. Then play.
+                    </div>
+                    <div style="margin-bottom:15px;">In a real app, your backend...</div>
+
+                    <!-- Show source button -->
+                    <button
+                            type="button"
+                            onclick="window.open('https://github.com/filethis/ft-connect-minimal-site/blob/master/index.html'); return false;">
+                        Show Source
+                    </button>
                 </div>
-                <div class="instructions">
-                    Use the FileThis Front-End tool to create a user account and a temporary user access token using
-                    your API key and secret, and then paste the account id and token string into the fields below.
-                    Click the "Inject" button to inject these into the component instance. Then play.
-                </div>
-                <div style="margin-bottom:15px;">In a real app, your backend...</div>
-
-                <!-- Show source button -->
-                <button
-                        type="button"
-                        style="margin-left:20px;"
-                        onclick="window.open('https://github.com/filethis/ft-connect-minimal-site/blob/master/index.html'); return false;">
-                    Show Source
-                </button>
             </div>
-
         </div>
 
         <script>
@@ -200,13 +267,16 @@ limitations under the License.
 
             function turnOn()
             {
+                // window.alert = function() {
+                //     debugger;
+                // };
+
                 var wizard = document.getElementById("wizard");
-                var offline = document.getElementById("offline");
+                var placeholder = document.getElementById("placeholder");
+                
+                addEventListentersTo(wizard);
 
-                // Add error handler
-                wizard.addEventListener('ft-connect-error', onWizardError);
-
-                // Get entered values
+                // Get values entered by the user
                 var userAccountId = document.getElementById("userAccountIdField").value;
                 var userAccessToken = document.getElementById("userAccessTokenField").value;
 
@@ -224,7 +294,7 @@ limitations under the License.
 
                 // Show the wizard
                 show(wizard);
-                hide(offline);
+                hide(placeholder);
 
                 // Inject values into the wizard and turn it on
                 wizard.userAccountId = userAccountId;
@@ -239,14 +309,13 @@ limitations under the License.
             function turnOff()
             {
                 var wizard = document.getElementById("wizard");
-                var offline = document.getElementById("offline");
-
-                // Remove error handler
-                wizard.removeEventListener('ft-connect-error', onWizardError);
+                var placeholder = document.getElementById("placeholder");
+                
+                removeEventListenersFrom(wizard);
 
                 // Hide the wizard
                 hide(wizard);
-                show(offline);
+                show(placeholder);
 
                 // Turn off the wizard
                 wizard.live = false;
@@ -261,16 +330,28 @@ limitations under the License.
                 var powerButton = document.getElementById("powerButton");
                 return (powerButton.innerText === "Turn Off");
             }
-
+            
+            function addEventListentersTo(wizard)
+            {
+                wizard.addEventListener('ft-connect-error', onWizardError);
+                wizard.addEventListener('wizard-canceled-command', onWizardCanceledCommand);
+                wizard.addEventListener('wizard-done-command', onWizardDoneCommand);
+            }
+            
+            function removeEventListenersFrom(wizard)
+            {
+                wizard.removeEventListener('wizard-done-command', onWizardDoneCommand);
+                wizard.removeEventListener('wizard-canceled-command', onWizardCanceledCommand);
+                wizard.removeEventListener('ft-connect-error', onWizardError);
+            }
+            
             function show(element)
             {
                 element.classList.remove("hidden");
-                element.classList.add("shown");
             }
 
             function hide(element)
             {
-                element.classList.remove("shown");
                 element.classList.add("hidden");
             }
 
@@ -281,8 +362,16 @@ limitations under the License.
                 alert(event.detail);
             }
 
+            function onWizardCanceledCommand(event)
+            {
+                alert("When the user clicks the \"Cancel\" button, your \"wizard-canceled-command\" event handler should do the appropriate thing in your workflow.");
+            }
+
+            function onWizardDoneCommand(event)
+            {
+                alert("When the user clicks the \"Done\" button, your \"wizard-done-command\" event handler should do the appropriate thing in your workflow.");
+            }
+
         </script>
-
     </body>
-
 </html>

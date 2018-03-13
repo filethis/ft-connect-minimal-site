@@ -23,14 +23,34 @@ LOCAL_PORT=3505
 CDN_DISTRIBUTION_ID=EJ2RMYD38WUXM
 
 
-# Open in browser -----------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Install development tools
+#------------------------------------------------------------------------------
 
-.PHONY: browse
-browse:  ## Open the site in browser
-	@open http://localhost:${LOCAL_PORT};
+.PHONY: install-node-mac
+install-node-mac:  ## Install Node (and NPM)
+	@brew install node
+
+.PHONY: install-bower
+install-bower:  ## Install Bower
+	@npm install -g bower
+
+.PHONY: install-polymer-cli
+install-polymer-cli:  ## Install Polymer CLI
+	npm install -g polymer-cli
+
+.PHONY: install-browser-sync
+install-browser-sync:  ## Install BrowserSync
+	npm install -g browser-sync;
+
+.PHONY: install
+install: install-node-mac install-bower install-polymer-cli install-browser-sync ## Install all development tools
+	@echo Installed all development tools
 
 
-# Serve -----------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Serve
+#------------------------------------------------------------------------------
 
 .PHONY: serve-browsersync
 serve-browsersync:  ## Serve the site using BrowserSync
@@ -57,7 +77,18 @@ serve: serve-browsersync  ## Shortcut for "serve-browsersync"
 	@echo Serving with BrowserSync...;
 
 
-# Publish -----------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Open in browser
+#------------------------------------------------------------------------------
+
+.PHONY: browse
+browse:  ## Open the site in browser
+	@open http://localhost:${LOCAL_PORT};
+
+
+#------------------------------------------------------------------------------
+# Publish
+#------------------------------------------------------------------------------
 
 .PHONY: publish
 publish: publish-versioned publish-latest # Internal: Publish both versioned and latest app
@@ -82,8 +113,9 @@ invalidate: invalidate-latest  # Shortcut for "invalidate-latest"
 	@echo Invalidated;
 
 
-# Publications -----------------------------------------------------------------------------------
-
+#------------------------------------------------------------------------------
+# Publications
+#------------------------------------------------------------------------------
 
 # Browse published application
 
@@ -107,8 +139,27 @@ publication-url-app-latest:  ## Print the published, latest application url
 	@echo https://connect.filethis.com/${NAME}/latest/app/index.html;
 
 
+#------------------------------------------------------------------------------
+# Bower
+#------------------------------------------------------------------------------
 
-# Help -----------------------------------------------------------------------------------
+.PHONY: bower-install-packages
+bower-install-packages:  ## Install all Bower packages specified in bower.json file, using symlinks for FileThis projects.
+	@mkdir -p ./bower_components; \
+	bower install;
+
+.PHONY: bower-clean-packages
+bower-clean-packages:  ## Clean all installed bower packages.
+	@cd ./bower_components; \
+	find . -mindepth 1 -maxdepth 1 -exec rm -rf {} +;
+
+.PHONY: bower-reinstall-packages
+bower-reinstall-packages: bower-clean-packages bower-install-packages  ## Clean and reinstall all bower packages using symlinks for FileThis projects.
+
+
+#------------------------------------------------------------------------------
+# Help
+#------------------------------------------------------------------------------
 
 .PHONY: help
 help:  ## Print Makefile usage. See: https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html

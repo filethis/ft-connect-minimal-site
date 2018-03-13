@@ -14,18 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-
 <!doctype html>
 <html lang="en">
 
     <head>
+
+        <!-- Boilerplate -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
+        <!-- Window title and description -->
         <title>ft-connect-minimal-site</title>
         <meta name="description" content="ft-connect-minimal-site description">
 
-        <!-- Load any polyfills needed by the browser to support Web Components -->
+        <!-- Load any polyfills needed by the user's browser to support Web Components -->
         <script src="https://connect.filethis.com/webcomponents/webcomponentsjs/1.0.0/webcomponents-loader.js"></script>
 
         <style>
@@ -35,7 +37,7 @@ limitations under the License.
                 height: 100%;
                 margin: 0;
                 box-sizing: border-box;
-                overflow:hidden;
+                overflow: hidden;
             }
             *, *:before, *:after {
                 box-sizing: inherit;
@@ -58,7 +60,7 @@ limitations under the License.
                 font-size: 16pt;
             }
             .divider {
-                width: 25px; height: 70%;
+                width: 22px; height: 70%;
                 border-left: 1px solid #EEE;
                 margin-left: 20px;
             }
@@ -90,9 +92,9 @@ limitations under the License.
             .placeholder-title {
                 color: #A9A9A9;
                 font-family: Arial, Helvetica, sans-serif;
+                margin-bottom: 15px;
             }
-            .instructions {
-                margin-top: 15px;
+            p {
                 font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
             }
             .button {
@@ -102,7 +104,7 @@ limitations under the License.
                 display: none !important;
             }
 
-            /* Example of custom style mixin applied to FileThis sub-component */
+            /* Example of applying a custom style mixin to a FileThis sub-component */
             html {
                 --ft-source-panel-heading:
                 {
@@ -133,7 +135,6 @@ limitations under the License.
                 -webkit-align-items: center;
                 align-items: center;
             }
-            .layout.center-justified,
             .layout.center-center {
                 -ms-flex-pack: center;
                 -webkit-justify-content: center;
@@ -147,15 +148,17 @@ limitations under the License.
                 flex-basis: 0.000000001px;
             }
         </style>
-
     </head>
 
     <body>
 
-        <!-- Import the FileThis drop-in "wizard" web component -->
+        <!-- Import drop-in copy of the ft-connect-wizard Web Component from FileThis CDN -->
         <link rel="import" href="https://connect.filethis.com/ft-connect-wizard/latest/dropin/ft-connect-wizard.html">
+                                                    <!-- or -->
+        <!-- Import local copy of the ft-connect-wizard Web Component. (Execute "make bower-install-packages" first.) -->
+        <!--<link rel="import" href="bower_components/ft-connect-wizard/ft-connect-wizard.html">-->
 
-        <!-- Main panel with the fixture panel above the FileThis web component element -->
+        <!-- Main panel with the fixture panel above the FileThis Web Component element -->
         <div class="main layout vertical">
 
             <!-- Fixture panel -->
@@ -166,16 +169,17 @@ limitations under the License.
                     FileThisConnect Minimal Site
                 </div>
 
+                <!-- TODO: Update developer website for this new version and then uncomment this. -->
                 <!-- Guide button -->
-                <button
-                        id="guideButton"
-                        class="button hidden"
-                        type="button"
-                        onclick="window.open('https://filethis.com/developer/front-end/ft-connect-minimal-site/'); return false;">
-                    Guide
-                </button>
+                <!--<button-->
+                        <!--id="guideButton"-->
+                        <!--class="button"-->
+                        <!--type="button"-->
+                        <!--onclick="window.open('https://filethis.com/developer/front-end/ft-connect-minimal-site/'); return false;">-->
+                    <!--Guide-->
+                <!--</button>-->
 
-                <!-- Divider -->
+                <!-- Dividing line -->
                 <div class="divider"></div>
 
                 <!-- Entry fields -->
@@ -184,17 +188,50 @@ limitations under the License.
                     <!-- FileThis User account id field -->
                     <div class="layout horizontal">
                         <div class="field-label">User Account ID:</div>
-                        <input id="userAccountIdField" type="text" class="field-entry">
+                        <input
+                            id="userAccountIdField"
+                            class="field-entry"
+                            type="text"
+                            onkeyup="saveSettings()"
+                        >
                     </div>
-
-                    <!-- Spacer -->
-                    <div style="height:6px;"></div>
 
                     <!-- FileThis User access token field -->
-                    <div class="layout horizontal">
+                    <div class="layout horizontal" style="margin-top:6px;">
                         <div class="field-label">User Access Token:</div>
-                        <input id="userAccessTokenField" type="password" class="field-entry">
+                        <input
+                            id="userAccessTokenField"
+                            class="field-entry"
+                            type="password"
+                            onkeyup="saveSettings()"
+                        >
                     </div>
+                </div>
+
+                <!-- Dividing line -->
+                <div class="divider"></div>
+
+                <!-- SDK Tool and Source buttons -->
+                <div class="layout vertical center">
+
+                    <!-- SDK Tool button -->
+                    <button
+                        type="button"
+                        style="width:64px;"
+                        onclick="window.open('https://connect.filethis.com/ft-connect-front-end-sdk-tool/latest/app/index.html'); return false;"
+                    >
+                        SDK Tool
+                    </button>
+
+                    <!-- Show source button -->
+                    <button
+                        type="button"
+                        style="width:64px; margin-top:6px;"
+                        onclick="window.open('https://github.com/filethis/ft-connect-minimal-site/blob/master/index.html'); return false;"
+                    >
+                        Source
+                    </button>
+
                 </div>
 
                 <!-- Spacer -->
@@ -202,60 +239,81 @@ limitations under the License.
 
                 <!-- Power button -->
                 <button
-                        id="powerButton"
-                        class="button"
-                        type="button"
-                        onclick="onPowerButtonClicked()">
+                    id="powerButton"
+                    class="button"
+                    type="button"
+                    onclick="onPowerButtonClicked()"
+                >
                     Turn On
                 </button>
             </div>
 
-            <!-- Center the wizard or placeholder elements in the content area -->
+            <!-- Center the wizard and placeholder elements within the content area. Only one is visible at a time. -->
             <div class="content flex layout vertical center-center">
 
-                <!-- Instance of the FileThis "wizard" web component element -->
+                <!-- Instance of the FileThis "wizard" Web Component element -->
+                <!- ******************************************************** -->
                 <ft-connect-wizard
-                        id="wizard"
-                        class="wizard hidden"
-                        live="false"
-                        user-account-id="XXXXX"
-                        token="XXXXX"
-                        debug="false"
-                        fake-sources="true">
+                    id="wizard"
+                    class="wizard hidden"
+                    live="false"
+                    user-account-id="XXXXX"
+                    token="XXXXX"
+                    debug="false"
+                    fake-sources="true"
+                >
                 </ft-connect-wizard>
+                <!- ******************************************************** -->
 
-                <!-- Placeholder with a dotted-outline that shows where the wizard element will go and contains some instructions -->
+                <!-- Placeholder with a dotted-outline that shows where the wizard will go and contains instructions -->
                 <div
-                        id="placeholder"
-                        class="placeholder layout vertical center">
-
+                    id="placeholder"
+                    class="placeholder layout vertical"
+                >
                     <!-- Title -->
-                    <div class="placeholder-title">FileThis Web Component Element</div>
+                    <div class="layout vertical center">
+                        <div class="placeholder-title">&lt;ft-connect-wizard&gt;</div>
+                    </div>
 
                     <!-- Instructions -->
-                    <div class="instructions">
-                        This is the "ft-connect-minimal-site" website.
-                        It demonstrates how to embed an instance of the the "ft-connect-wizard" drop-in
-                        web component element into a simple website
-                    </div>
-                    <div class="instructions">
-                        Use the FileThis Front-End tool to create a user account and a temporary user access token using
-                        your API key and secret, and then paste the account id and token string into the fields below.
-                        Click the "Inject" button to inject these into the component instance. Then play.
-                    </div>
-                    <div style="margin-bottom:15px;">In a real app, your backend...</div>
+                    <p>
+                        Welcome to the FileThisConnect minimal website.
+                    </p>
 
-                    <!-- Show source button -->
-                    <button
-                            type="button"
-                            onclick="window.open('https://github.com/filethis/ft-connect-minimal-site/blob/master/index.html'); return false;">
-                        Show Source
-                    </button>
+                    <p>
+                        This is a website which embeds an instance of the <i>ft-connect-wizard</i> Web Component
+                        element. In order to highlight the ease and simplicity of embedding this component, we made the
+                        code that surrounds it as simple as possible. To view the single source code file that
+                        implements this site, you can either use your browser's <i>View Page Source</i> command,
+                        or click the <i>Source</i> button above to visit our GitHub repository.
+                    </p>
+
+                    <p>
+                        This header at the top of this page lets you enter the FileThis user account ID and access token
+                        that are needed to bring the component to life. In an actual integration of your system and ours,
+                        you'll add code to your backend to request these from our service and then convey them to your own
+                        front end by the appropriate means.
+                    </p>
+
+                    <p>
+                        To obtain a FileThis user account ID and access token for use by this page, click the <i>SDK Tool</i>
+                        button above to visit the <i>FileThisConnect Front-End SDK Tool</i> webapp, and create them
+                        there using your FileThis API key and secret. After you’ve pasted the two
+                        strings into the fields in the header above, click the <i>Turn On</i> button at the
+                        upper right-hand corner of this window to inject them into the component. You'll see the live
+                        component replace the box that contains these instructions.
+                    </p>
                 </div>
             </div>
         </div>
 
         <script>
+
+            // Startup
+            (function()
+            {
+               loadSettings();
+            })();
 
             function onPowerButtonClicked()
             {
@@ -267,10 +325,6 @@ limitations under the License.
 
             function turnOn()
             {
-                // window.alert = function() {
-                //     debugger;
-                // };
-
                 var wizard = document.getElementById("wizard");
                 var placeholder = document.getElementById("placeholder");
                 
@@ -355,13 +409,6 @@ limitations under the License.
                 element.classList.add("hidden");
             }
 
-            function onWizardError(event)
-            {
-                turnOff();
-
-                alert(event.detail);
-            }
-
             function onWizardCanceledCommand(event)
             {
                 alert("When the user clicks the \"Cancel\" button, your \"wizard-canceled-command\" event handler should do the appropriate thing in your workflow.");
@@ -370,6 +417,50 @@ limitations under the License.
             function onWizardDoneCommand(event)
             {
                 alert("When the user clicks the \"Done\" button, your \"wizard-done-command\" event handler should do the appropriate thing in your workflow.");
+            }
+
+            function loadSettings()
+            {
+                if (localStorage.settings)
+                {
+                    var settings = JSON.parse(localStorage.settings);
+                    document.getElementById("userAccountIdField").value = settings.userAccountId;
+                    document.getElementById("userAccessTokenField").value = settings.userAccessToken;
+                }
+            }
+
+            function saveSettings()
+            {
+                var userAccountId = document.getElementById("userAccountIdField").value;
+                var userAccessToken = document.getElementById("userAccessTokenField").value;
+                var settings = { userAccountId: userAccountId, userAccessToken: userAccessToken };
+                localStorage.settings = JSON.stringify(settings);
+            }
+
+            function onWizardError(event)
+            {
+                turnOff();
+
+                alert(getErrorMessageFrom(event));
+            }
+
+            function getErrorMessageFrom(event)
+            {
+                var detail = event.detail;
+                if (!detail)
+                    return "Error";
+                var response = detail.response;
+                if (!response)
+                    return detail;
+                var status = response.status;
+                if (!status)
+                    return detail;
+                if (status === 400)
+                    return "The current FileThis user access token expired.\n\nClick the \"SDK Tool\" button to create a new one and paste it into the field on this page.";
+                var message = response.message;
+                if (!message)
+                    return detail;
+                return message;
             }
 
         </script>

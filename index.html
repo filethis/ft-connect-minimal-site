@@ -110,14 +110,6 @@ limitations under the License.
                 display: none !important;
             }
 
-            /* Example of applying a custom style mixin to a FileThis sub-component */
-            html {
-                --ft-source-panel-heading:
-                {
-                    font-size:14pt;
-                };
-            }
-
             /* FlexBox */
             .layout.horizontal,
             .layout.vertical {
@@ -154,6 +146,19 @@ limitations under the License.
                 flex-basis: 0.000000001px;
             }
         </style>
+
+        <!-- An example of styling a sub-component of the ft-connect-wizard component -->
+        <custom-style>
+            <style>
+                html
+                {
+                    --ft-source-panel-header: {
+                        background-color: white;
+                    };
+                }
+            </style>
+        </custom-style>
+
     </head>
 
     <body>

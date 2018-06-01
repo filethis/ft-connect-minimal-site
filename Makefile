@@ -18,7 +18,7 @@ SHELL := /bin/bash
 
 # Project configuration
 NAME=ft-connect-minimal-site
-VERSION=1.0.29
+VERSION=1.0.30
 LOCAL_PORT=3505
 CDN_DISTRIBUTION_ID=EJ2RMYD38WUXM
 

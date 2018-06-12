@@ -18,9 +18,10 @@ SHELL := /bin/bash
 
 # Project configuration
 NAME=ft-connect-minimal-site
-VERSION=1.0.30
+VERSION=1.0.31
 LOCAL_PORT=3505
 CDN_DISTRIBUTION_ID=EJ2RMYD38WUXM
+AWS_VAULT_PROFILE=filethis-production
 
 
 #------------------------------------------------------------------------------
@@ -96,17 +97,17 @@ publish: publish-versioned publish-latest # Internal: Publish both versioned and
 
 .PHONY: publish-versioned
 publish-versioned:  # Internal: Publish versioned app
-	@aws s3 sync . s3://connect.filethis.com/${NAME}/${VERSION}/app/ --exclude "*" --include "index.html"; \
+	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync . s3://connect.filethis.com/${NAME}/${VERSION}/app/ --exclude "*" --include "index.html"; \
 	echo https://connect.filethis.com/${NAME}/${VERSION}/app/index.html;
 
 .PHONY: publish-latest
 publish-latest:  # Internal: Publish latest app
-	@aws s3 sync . s3://connect.filethis.com/${NAME}/latest/app/ --exclude "*" --include "index.html"; \
+	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync . s3://connect.filethis.com/${NAME}/latest/app/ --exclude "*" --include "index.html"; \
 	echo https://connect.filethis.com/${NAME}/latest/app/index.html;
 
 .PHONY: invalidate-latest
 invalidate-latest:  # Internal: Invalidate CDN distribution of latest app
-	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/app/*"; fi
+	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws-vault exec ${AWS_VAULT_PROFILE} -- aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/app/*"; fi
 
 .PHONY: invalidate
 invalidate: invalidate-latest  # Shortcut for "invalidate-latest"

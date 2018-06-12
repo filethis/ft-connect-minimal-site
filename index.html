@@ -45,19 +45,19 @@ limitations under the License.
             }
 
             /* Local */
-            .main {
+            #main {
                 height: 100%;
                 background-color: #FAFAFA;
                 border-bottom: 1px solid black;
             }
-            .fixture {
+            #fixture {
                 height: 60px;
                 border-bottom: 2px solid #DDD;
                 padding-left: 20px;
                 padding-right: 20px;
                 background-color: white;
             }
-            .title {
+            #title {
                 font-family: Arial, Helvetica, sans-serif;
                 font-size: 16pt;
             }
@@ -75,10 +75,10 @@ limitations under the License.
                 margin-left: 5px;
                 font-family: Arial, Helvetica, sans-serif;
             }
-            .content {
+            #content {
                 padding: 20px;
             }
-            .placeholder {
+            #placeholder {
                 box-shadow: 8px 8px 8px #CCC;
                 width: 800px;
                 height: 500px;
@@ -86,17 +86,18 @@ limitations under the License.
                 padding: 10px 15px 10px 15px;
                 background-color: white;
             }
-            .wizard {
+            #wizard {
                 box-shadow: 8px 8px 8px #CCC;
                 width: 800px;
                 height: 500px;
                 border: 1px solid black;
             }
-            .placeholder-title {
+            #placeholderTitle {
                 color: #A9A9A9;
                 font-family: Arial, Helvetica, sans-serif;
                 margin-bottom: 15px;
             }
+
             p {
                 font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
             }
@@ -106,6 +107,7 @@ limitations under the License.
             .button-stacked {
                 width: 80px;
             }
+
             .hidden {
                 display: none !important;
             }
@@ -148,8 +150,9 @@ limitations under the License.
         </style>
 
         <!-- An example of styling a sub-component of the ft-connect-wizard component -->
+        <link rel="import" href="ft-iron-flex-layout-unset.html">
         <custom-style>
-            <style>
+            <style is="custom-style">
                 html
                 {
                     --ft-source-panel-header: {
@@ -169,14 +172,26 @@ limitations under the License.
         <!-- Import local copy of the ft-connect-wizard Web Component. (Execute "make bower-install-packages" first.) -->
         <!--<link rel="import" href="bower_components/ft-connect-wizard/ft-connect-wizard.html">-->
 
+        <!-- Settings -->
+        <!--<dom-bind>-->
+            <!--<template>-->
+                <!--<div>BAR</div>-->
+                <!--<ft-global-variable name="ft-source-panel-heading" value="{{myval}}"></ft-global-variable>-->
+            <!--</template>-->
+        <!--</dom-bind>-->
+
         <!-- Main panel with the fixture panel above the FileThis Web Component element -->
-        <div class="main layout vertical">
+        <div
+            id="main"
+            class="layout vertical">
 
             <!-- Fixture panel -->
-            <div class="fixture layout horizontal center">
+            <div
+                id="fixture"
+                class="layout horizontal center">
 
                 <!-- Title -->
-                <div class="title">
+                <div id="title">
                     FileThisConnect Minimal Site
                 </div>
 
@@ -260,13 +275,15 @@ limitations under the License.
             </div>
 
             <!-- Center the wizard and placeholder elements within the content area. Only one is visible at a time. -->
-            <div class="content flex layout vertical center-center">
+            <div
+                id="content"
+                class="flex layout vertical center-center">
 
                 <!-- Instance of the FileThis "wizard" Web Component element -->
                 <!-- ******************************************************* -->
                 <ft-connect-wizard
                     id="wizard"
-                    class="wizard hidden"
+                    class="hidden"
                     live="false"
                     user-account-id="XXXXX"
                     token="XXXXX"
@@ -279,11 +296,11 @@ limitations under the License.
                 <!-- Placeholder with a dotted-outline that shows where the wizard will go and contains instructions -->
                 <div
                     id="placeholder"
-                    class="placeholder layout vertical"
+                    class="layout vertical"
                 >
                     <!-- Title -->
                     <div class="layout vertical center">
-                        <div class="placeholder-title">&lt;ft-connect-wizard&gt;</div>
+                        <div id="placeholderTitle">&lt;ft-connect-wizard&gt;</div>
                     </div>
 
                     <!-- Instructions -->

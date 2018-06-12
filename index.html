@@ -155,8 +155,18 @@ limitations under the License.
             <style is="custom-style">
                 html
                 {
-                    --ft-source-panel-header: {
+                    --ft-source-panel: {
                         background-color: white;
+                    };
+                    --ft-source-panel-header: {
+                        height: 120px;
+                        @apply --layout-center-unset;
+                        @apply --layout-vertical;
+                    };
+                    --ft-source-panel-search-field: {
+                        background-color:dodgerblue;
+                        width: initial;
+                        @apply --layout-flex;
                     };
                 }
             </style>
@@ -173,12 +183,11 @@ limitations under the License.
         <!--<link rel="import" href="bower_components/ft-connect-wizard/ft-connect-wizard.html">-->
 
         <!-- Settings -->
-        <!--<dom-bind>-->
-            <!--<template>-->
-                <!--<div>BAR</div>-->
-                <!--<ft-global-variable name="ft-source-panel-heading" value="{{myval}}"></ft-global-variable>-->
-            <!--</template>-->
-        <!--</dom-bind>-->
+        <dom-bind id="settings">
+            <template>
+                <ft-global-variable name="ft-source-panel-heading" value="This is awesome"></ft-global-variable>
+            </template>
+        </dom-bind>
 
         <!-- Main panel with the fixture panel above the FileThis Web Component element -->
         <div
@@ -353,6 +362,9 @@ limitations under the License.
 
             function turnOn()
             {
+                var settings = document.querySelector("#settings");
+                settings.sourcePanelHeading = "Let's get a picture of your profits";
+
                 var wizard = document.getElementById("wizard");
                 var placeholder = document.getElementById("placeholder");
                 

@@ -149,29 +149,6 @@ limitations under the License.
             }
         </style>
 
-        <!-- An example of styling a sub-component of the ft-connect-wizard component -->
-        <link rel="import" href="ft-iron-flex-layout-unset.html">
-        <custom-style>
-            <style is="custom-style">
-                html
-                {
-                    --ft-source-panel: {
-                        background-color: white;
-                    };
-                    --ft-source-panel-header: {
-                        height: 120px;
-                        @apply --layout-center-unset;
-                        @apply --layout-vertical;
-                    };
-                    --ft-source-panel-search-field: {
-                        background-color:dodgerblue;
-                        width: initial;
-                        @apply --layout-flex;
-                    };
-                }
-            </style>
-        </custom-style>
-
     </head>
 
     <body>
@@ -182,12 +159,8 @@ limitations under the License.
         <!-- Import local copy of the ft-connect-wizard Web Component. (Execute "make bower-install-packages" first.) -->
         <!--<link rel="import" href="bower_components/ft-connect-wizard/ft-connect-wizard.html">-->
 
-        <!-- Settings -->
-        <dom-bind id="settings">
-            <template>
-                <ft-global-variable name="ft-source-panel-heading" value="This is awesome"></ft-global-variable>
-            </template>
-        </dom-bind>
+        <!-- Import customized wizard, if you want to use it below -->
+        <!--<link rel="import" href="ft-connect-wizard-customized.html">-->
 
         <!-- Main panel with the fixture panel above the FileThis Web Component element -->
         <div
@@ -290,6 +263,7 @@ limitations under the License.
 
                 <!-- Instance of the FileThis "wizard" Web Component element -->
                 <!-- ******************************************************* -->
+
                 <ft-connect-wizard
                     id="wizard"
                     class="hidden"
@@ -300,6 +274,20 @@ limitations under the License.
                     fake-sources="true"
                 >
                 </ft-connect-wizard>
+
+                    <!-- or -->
+
+                <!--<ft-connect-wizard-customized-->
+                    <!--id="wizard"-->
+                    <!--class="hidden"-->
+                    <!--live="false"-->
+                    <!--user-account-id="XXXXX"-->
+                    <!--token="XXXXX"-->
+                    <!--debug="false"-->
+                    <!--fake-sources="true"-->
+                <!--&gt;-->
+                <!--</ft-connect-wizard-customized>-->
+
                 <!-- ******************************************************* -->
 
                 <!-- Placeholder with a dotted-outline that shows where the wizard will go and contains instructions -->
@@ -362,9 +350,6 @@ limitations under the License.
 
             function turnOn()
             {
-                var settings = document.querySelector("#settings");
-                settings.sourcePanelHeading = "Let's get a picture of your profits";
-
                 var wizard = document.getElementById("wizard");
                 var placeholder = document.getElementById("placeholder");
                 

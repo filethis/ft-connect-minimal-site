@@ -16,7 +16,7 @@ limitations under the License.
 
 <link rel="import" href="ft-iron-flex-layout-unset.html">
 
-<dom-module id="customized-wizard">
+<dom-module id="ft-connect-wizard-customized">
 
     <template>
 
@@ -24,32 +24,34 @@ limitations under the License.
 
         <style>
 
+            /* Styling for this component */
             :host {
                 display: block;
                 overflow: hidden;
                 @apply --layout-vertical;
             }
 
-            /* Custom Styling */
-            html
+            /* Custom styling of FileThis sub-components */
+            :root
             {
                 --ft-source-panel: {
                     background-color: white;
                 };
-                /*--ft-source-panel-header: {*/
-                    /*height: 120px;*/
-                    /*@apply --layout-center-unset;*/
-                    /*@apply --layout-vertical;*/
-                /*};*/
-                /*--ft-source-panel-search-field: {*/
-                    /*background-color:dodgerblue;*/
-                    /*width: initial;*/
-                    /*@apply --layout-flex;*/
-                /*};*/
+                --ft-source-panel-header: {
+                    height: 120px;
+                    @apply --layout-vertical;
+                    @apply --layout-center-unset;
+                };
+                --ft-source-panel-search-field: {
+                    background-color:dodgerblue;
+                    width: initial;
+                    @apply --layout-flex;
+                };
             }
+
         </style>
 
-        <!-- Custom Settings -->
+        <!-- Custom settings for FileThis sub-components -->
         <ft-global-variable name="ft-source-panel-heading" value="{{sourcePanelHeading}}"></ft-global-variable>
 
         <!-- Instance of the FileThis "wizard" Web Component element -->
@@ -71,17 +73,26 @@ limitations under the License.
     <script>
         Polymer({
 
-            is: 'customized-wizard',
+            is: 'ft-connect-wizard-customized',
 
             properties:
             {
+                // Custom settings that are bound to the global variables used to configure sub-components.
+                // The default values you put into these properties will be injected into the components via the globals
+                // when the FtGlobalVariables.initialize() function is called in this element's ready() method below.
+
                 /** Source panel heading. */
                 sourcePanelHeading:
                 {
                     type: String,
                     notify: true,
-                    value: "Let's get a picture of your profits",
+                    value: "Click on an institution below to get your documents",
                 },
+
+
+                // Public properties whose purpose is act as a kind of bridge, binding values provided by the
+                // instantiator of this element to the same properties in the ft-connect-wizard instance which is
+                // this element's only child.
 
                 /** Whether the wizard is alive or not. */
                 live:
@@ -120,6 +131,12 @@ limitations under the License.
                     notify: true,
                     value: true
                 },
+            },
+
+            ready: function()
+            {
+                // Apply our custom settings above
+                window.FileThis.FtGlobalVariables.initialize();
             },
         })
 

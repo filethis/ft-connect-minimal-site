@@ -37,6 +37,16 @@ limitations under the License.
                 --ft-connect-wizard: {
                     background-color: white;
                 };
+                --ft-source-panel-header: {
+                    padding: 16px;
+                    height: 85px;
+                    @apply --layout-vertical;
+                    @apply --layout-center-unset;
+                };
+                --ft-source-panel-search-field: {
+                    width: initial;
+                    margin: 0;
+                };
                 --ft-source-panel-heading: {
                     font-family: Verdana, Geneva, sans-serif;
                 };
@@ -46,24 +56,11 @@ limitations under the License.
                 --ft-document-panel-heading: {
                     font-family: Verdana, Geneva, sans-serif;
                 };
-                --ft-source-panel-header: {
-                    height: 120px;
-                    @apply --layout-vertical;
-                    @apply --layout-center-unset;
-                };
-                --ft-source-panel-search-field: {
-                    background-color:dodgerblue;
-                    width: initial;
-                    @apply --layout-flex;
-                };
-                --ft-wizard-finish-panel-button: {
-                    display: none;
-                };
             }
 
         </style>
 
-        <!-- Custom settings for FileThis sub-components -->
+        <!-- Custom settings for FileThis sub-components. See the new values in the "properties" section below. -->
         <ft-global-variable name="ft-connect-wizard-show-cancel-button" value="{{connectWizardShowCancelButton}}"></ft-global-variable>
         <ft-global-variable name="ft-source-panel-heading" value="{{sourcePanelHeading}}"></ft-global-variable>
         <ft-global-variable name="ft-source-panel-show-filters" value="{{sourcePanelShowFilters}}"></ft-global-variable>

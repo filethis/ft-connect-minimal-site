@@ -3,7 +3,7 @@
   "description": "This file is not used for drop-in deployments of the ft-connect-wizard element, only custom ones.",
   "main": "index.html",
   "dependencies": {
-    "ft-connect-wizard": "filethis/ft-connect-wizard#^1.0.11",
+    "ft-connect-wizard": "filethis/ft-connect-wizard#^latest",
     "polymer": "Polymer/polymer#1.9 - 2",
     "validator-js": "^7.0.0"
   },

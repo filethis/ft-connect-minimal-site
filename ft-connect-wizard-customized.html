@@ -37,6 +37,16 @@ limitations under the License.
                 --ft-source-panel: {
                     background-color: white;
                 };
+                --ft-source-panel-header: {
+                    height: 120px;
+                    @apply --layout-vertical;
+                    @apply --layout-center-unset;
+                };
+                --ft-source-panel-search-field: {
+                    background-color:dodgerblue;
+                    width: initial;
+                    @apply --layout-flex;
+                };
             }
 
         </style>
@@ -67,7 +77,9 @@ limitations under the License.
 
             properties:
             {
-                // Custom settings that are bound to the global variables used to configure sub-components
+                // Custom settings that are bound to the global variables used to configure sub-components.
+                // The default values you put into these properties will be injected into the components via the globals
+                // when the FtGlobalVariables.initialize() function is called in this element's ready() method below.
 
                 /** Source panel heading. */
                 sourcePanelHeading:
@@ -78,7 +90,9 @@ limitations under the License.
                 },
 
 
-                // Public properties of this element that are bound to the same ones in the ft-connect-wizard instance
+                // Public properties whose purpose is act as a kind of bridge, binding values provided by the
+                // instantiator of this element to the same properties in the ft-connect-wizard instance which is
+                // this element's only child.
 
                 /** Whether the wizard is alive or not. */
                 live:

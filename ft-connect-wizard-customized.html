@@ -14,7 +14,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
+
+<!------------------------------------------------------------------------------------------------------------------
+
+This file is a kind of wrapper around the ft-connect-wizard component. Its purpose is to demonstrate how to reach
+into the wizard and its sub-components to apply custom styling and to change default property settings.
+
+The CSS customization is done in the ":root" descriptor below. This uses Polymer's custom style mixin facility to
+apply styles to specific sub-components.
+
+The default property settings are customized by changing the "value" slots of the properties defined below. These
+values get injected into the corresponding sub-component via the ft-global-variable elements below.
+
+Note that the public properties of this wrapper match those of the ft-connect-wizard component that it wraps.
+These properties serve as a kind of bridge, binding values provided by the instantiator of this element to the same
+properties in the ft-connect-wizard instance that is this element's only child.
+
+Note that for FlexBox layout changes, it is sometimes necessary to remove sets of layout styles. We provide the
+"ft-iron-flex-layout-unset.html" file for this purpose. For each normal FlexBox class, this file has a corresponding
+"unset" style. To remove the "layout-center" style used by a sub-component, for example, you apply the
+"layout-center-unset" style.
+
+------------------------------------------------------------------------------------------------------------------>
+
+
+<!-- Provide the ability to "unset" FlexBox styles -->
 <link rel="import" href="ft-iron-flex-layout-unset.html">
+
 
 <dom-module id="ft-connect-wizard-customized">
 
@@ -24,7 +50,7 @@ limitations under the License.
 
         <style>
 
-            /* Styling for this component */
+            /* Styling for this component itself */
             :host {
                 display: block;
                 overflow: hidden;
@@ -135,9 +161,7 @@ limitations under the License.
                 },
 
 
-                // Public properties whose purpose is act as a kind of bridge, binding values provided by the
-                // instantiator of this element to the same properties in the ft-connect-wizard instance which is
-                // this element's only child.
+                // Public properties.
 
                 /** Whether the wizard is alive or not. */
                 live:

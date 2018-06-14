@@ -160,7 +160,7 @@ limitations under the License.
         <!--<link rel="import" href="bower_components/ft-connect-wizard/ft-connect-wizard.html">-->
 
         <!-- Import customized wizard, if you want to use it below -->
-        <!--<link rel="import" href="ft-connect-wizard-customized.html">-->
+        <link rel="import" href="ft-connect-wizard-customized.html">
 
         <!-- Main panel with the fixture panel above the FileThis Web Component element -->
         <div
@@ -264,20 +264,7 @@ limitations under the License.
                 <!-- Instance of the FileThis "wizard" Web Component element -->
                 <!-- ******************************************************* -->
 
-                <ft-connect-wizard
-                    id="wizard"
-                    class="hidden"
-                    live="false"
-                    user-account-id="XXXXX"
-                    token="XXXXX"
-                    debug="false"
-                    fake-sources="true"
-                >
-                </ft-connect-wizard>
-
-                    <!-- or -->
-
-                <!--<ft-connect-wizard-customized-->
+                <!--<ft-connect-wizard-->
                     <!--id="wizard"-->
                     <!--class="hidden"-->
                     <!--live="false"-->
@@ -286,7 +273,20 @@ limitations under the License.
                     <!--debug="false"-->
                     <!--fake-sources="true"-->
                 <!--&gt;-->
-                <!--</ft-connect-wizard-customized>-->
+                <!--</ft-connect-wizard>-->
+
+                    <!-- or -->
+
+                <ft-connect-wizard-customized
+                    id="wizard"
+                    class="hidden"
+                    live="false"
+                    user-account-id="XXXXX"
+                    token="XXXXX"
+                    debug="false"
+                    fake-sources="true"
+                >
+                </ft-connect-wizard-customized>
 
                 <!-- ******************************************************* -->
 

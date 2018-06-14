@@ -34,8 +34,17 @@ limitations under the License.
             /* Custom styling of FileThis sub-components */
             :root
             {
-                --ft-source-panel: {
+                --ft-connect-wizard: {
                     background-color: white;
+                };
+                --ft-source-panel-heading: {
+                    font-family: Verdana, Geneva, sans-serif;
+                };
+                --ft-connection-panel-heading: {
+                    font-family: Verdana, Geneva, sans-serif;
+                };
+                --ft-document-panel-heading: {
+                    font-family: Verdana, Geneva, sans-serif;
                 };
                 --ft-source-panel-header: {
                     height: 120px;
@@ -47,12 +56,19 @@ limitations under the License.
                     width: initial;
                     @apply --layout-flex;
                 };
+                --ft-wizard-finish-panel-button: {
+                    display: none;
+                };
             }
 
         </style>
 
         <!-- Custom settings for FileThis sub-components -->
+        <ft-global-variable name="ft-connect-wizard-show-cancel-button" value="{{connectWizardShowCancelButton}}"></ft-global-variable>
         <ft-global-variable name="ft-source-panel-heading" value="{{sourcePanelHeading}}"></ft-global-variable>
+        <ft-global-variable name="ft-source-panel-show-filters" value="{{sourcePanelShowFilters}}"></ft-global-variable>
+        <ft-global-variable name="ft-connection-panel-heading" value="{{connectionPanelHeading}}"></ft-global-variable>
+        <ft-global-variable name="ft-document-panel-heading" value="{{documentPanelHeading}}"></ft-global-variable>
 
         <!-- Instance of the FileThis "wizard" Web Component element -->
         <!-- ******************************************************* -->
@@ -81,12 +97,44 @@ limitations under the License.
                 // The default values you put into these properties will be injected into the components via the globals
                 // when the FtGlobalVariables.initialize() function is called in this element's ready() method below.
 
+                /** Show the cancel button in the header of the wizard. */
+                connectWizardShowCancelButton:
+                {
+                    type: Object,
+                    notify: true,
+                    value: false,
+                },
+
                 /** Source panel heading. */
                 sourcePanelHeading:
                 {
                     type: String,
                     notify: true,
-                    value: "Click on an institution below to get your documents",
+                    value: "Connect your bank or credit card to bring in documents",
+                },
+
+                /** Show a filter popup button. */
+                sourcePanelShowFilters:
+                {
+                    type: Object,
+                    notify: true,
+                    value: false,
+                },
+
+                /** Connection panel heading. */
+                connectionPanelHeading:
+                {
+                    type: String,
+                    notify: true,
+                    value: "These are the connections to your accounts",
+                },
+
+                /** Document panel heading. */
+                documentPanelHeading:
+                {
+                    type: String,
+                    notify: true,
+                    value: "These are the documents fetched from your accounts",
                 },
 
 
